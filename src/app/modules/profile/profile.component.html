@@ -1,0 +1,112 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>edit</mat-icon> Update Profile</span>
+
+
+  <div class="cs-right">
+  </div>
+</div>
+
+<form class="cs-box" [formGroup]="dataForm">
+  <div class="col">
+    <mat-card class="cs-card">
+      <mat-card-header>
+        <mat-card-title>User Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input type="text" matInput formControlName="firstname">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input type="text" matInput formControlName="lastname">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input type="text" matInput formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Phone</mat-label>
+          <input type="text" matInput formControlName="phone">
+        </mat-form-field>
+        <mat-form-field style="display: none;">
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="user_group_id">
+            <mat-option *ngFor="let option of groups" [value]="option.user_group_id">
+              {{option.name}}
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input type="text" matInput formControlName="password">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Confirm Password</mat-label>
+          <input type="text" matInput formControlName="confirmpassword">
+        </mat-form-field>
+
+        <div>
+          <div>
+            <img class="profile_image" *ngIf="dataForm.controls.image.value" [src]="dataForm.controls.image.value" onerror="this.onerror=null;this.src='assets/images/user.jpg';" />
+          </div>
+          <div class="fupload">
+            <label for="ifile">Attach Image</label>
+            <input type="file" id="ifile" (change)="onImageChange($event)" accept=".png, .jpg, .jpeg">
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <div class="col">
+
+    <mat-card class="cs-card" *ngIf="files">
+      <mat-card-header>
+        <mat-card-title>User Files</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul class="flist">
+          <li *ngFor="let file of files;let i = index">
+            <span>{{ file.name }}</span>
+            <span>
+              <button mat-icon-button color="primary" aria-label="Download" (click)="download(file)">
+                <mat-icon>attachment</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" aria-label="Delete" (click)="delete(file.file_id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </span>
+          </li>
+        </ul>
+        <div>
+          <label class="cs-dlnk2" for="inp_file">
+            <mat-icon mat-list-icon>add</mat-icon>  Add New Attachment
+          </label>
+          <input type="file" style="display:none;" id="inp_file" (change)="onFileChange($event)"/>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="form-add">
+      <button mat-raised-button color="warn" disabled *ngIf="submitted">
+        <span >Wait</span>
+      </button>
+      <button mat-raised-button color="warn" (click)="submitForm()" [disabled]="!dataForm.valid" *ngIf="!submitted">
+        <span>Update</span>
+
+      </button>
+    </div>
+
+  </div>
+
+</form>
+

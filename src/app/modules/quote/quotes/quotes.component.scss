@@ -1,0 +1,145 @@
+.cs-mat-table {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color:#fff;
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+    thead {
+      background: #198dca;
+      color: #fff;
+      th {
+        padding: 20px;
+        border-right: 1px solid #25729a;
+        min-width: 120px;
+        &:nth-of-type(1) {
+          text-align: left;
+          background: #25729a;
+        }
+      }
+    }
+
+    td {
+      text-align: center;
+      border: 1px solid #e6e6e6;
+      height: 60px;
+      padding:0px;
+      border-bottom: 1px solid #bbbbbb;
+    }
+
+    tbody{
+      tr{
+        td{
+          &:nth-of-type(1) {
+            font-weight: bold;
+            text-align: left;
+            padding-left: 20px;
+            background: #25729a;
+            color: #fff;
+            border: 1px solid #1c5c7d;
+            min-width: 230px;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+
+
+.csinput{
+  border: 1px solid #e6e6e6;
+    text-align: center;
+    padding: 10px 0px;
+    width: 70%;
+}
+
+
+.cs_aux_field {
+  display: inline-block;
+  padding: 0px 0px 20px;
+}
+
+.cs_aux_field label {
+  color: #25729a;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.cs_aux_field {
+  dp-date-picker{
+    width: 123px;
+    margin-right: 10px;
+  }
+
+
+  ::ng-deep{
+    input {
+      width: 100% !important;
+      border: 1px solid #e6e6e6;
+      padding: 17px 9px !important;
+      height: auto !important;
+    }
+
+    .mat-form-field-label {
+      color: #25729a;
+    }
+  }
+
+  .cs_aux_date {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  button{
+    padding: 8px 40px;
+    vertical-align: top;
+    margin-left: 10px;
+  }
+}
+
+
+
+
+.pnote {
+  font-weight: bold;
+  margin: 30px 0px 10px !important;
+  color: #c30b07;
+  font-size: 16px;
+  mat-icon{
+    vertical-align: middle;
+  }
+}
+
+
+
+
+.dr {
+    display: inline-block;
+    width: 50%;
+    >b {
+      display: block;
+      height: 39px;
+      padding: 0px 10px;
+      background: #f0f0f0;
+      line-height: 2.9;
+      color: #000;
+      &:nth-of-type(2) {
+        background: #bbbbbb;
+    }
+  }
+  &.n{
+    b {
+      background: #ffffff;
+      &:nth-of-type(2) {
+        border-top: 1px solid #e6e6e6;
+      }
+    }
+  }
+}
+
+
+.cs-mat-table{
+  overflow: auto;
+}

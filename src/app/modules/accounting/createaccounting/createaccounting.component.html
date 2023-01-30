@@ -1,0 +1,184 @@
+<div class="cs-page-header">
+  <span *ngIf="!editMode"><mat-icon mat-list-icon>add</mat-icon> Create Accounting Record</span>
+  <span *ngIf="editMode"><mat-icon mat-list-icon>edit</mat-icon> Edit Accounting Record</span>
+  <div class="cs-right">
+    <a [routerLink]="'/admin/accountings/list'" mat-flat-button>
+      <mat-icon mat-list-icon>keyboard_arrow_left</mat-icon>  Back
+    </a>
+    <ng-container *ngIf="invoiceId">
+      <button mat-flat-button (click)="printPage()"><svg><use xlink:href="#print_ico"></use></svg></button>
+      <button mat-flat-button (click)="savePDF()"><svg><use xlink:href="#pdf_ico"></use></svg></button>
+    </ng-container>
+  </div>
+</div>
+
+<form class="cs-box" [formGroup]="dataForm" id="content">
+  <div class="col col3-1">
+    <div>
+      <div class="col">
+        <mat-card class="cs-card" formGroupName="invoice">
+          <mat-card-header>
+            <mat-card-title>Accounting Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>Shipper Name</mat-label>
+              <input type="text" matInput [matAutocomplete]="autoShipper" formControlName="name" autocomplete="off">
+              <mat-autocomplete #autoShipper="matAutocomplete" [displayWith]="displayShipper()" (optionSelected)="onShipperSelectionChanged($event)">
+                <mat-option *ngFor="let option of filteredShippers | async" [value]="option">
+                  {{option.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Container No</mat-label>
+              <input type="text" matInput [matAutocomplete]="auto" formControlName="container_no" autocomplete="off">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayContainer" (optionSelected)="onContainerSelectionChanged($event)">
+                <mat-option *ngFor="let option of filteredContainers | async" [value]="option">
+                  {{option.container_no}}
+                </mat-option>
+              </mat-autocomplete>
+
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Booking No</mat-label>
+              <input type="text" matInput formControlName="booking_no">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Invoice No</mat-label>
+              <input type="text" matInput formControlName="invoice_no">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Invoice Type</mat-label>
+              <mat-select formControlName="invoice_type_id">
+                <mat-option *ngFor="let option of invoice_types" [value]="option.id">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Amount</mat-label>
+              <input type="text" matInput formControlName="amount">
+              <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Paid</mat-label>
+              <input type="text" matInput formControlName="paid">
+              <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Balance</mat-label>
+              <input type="text" matInput [value]="dataForm.controls.invoice['controls'].amount.value - dataForm.controls.invoice['controls'].paid.value" readonly>
+              <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+
+      <div class="col" *ngIf="dataHistory">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title> History</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <div>
+                <table class="gtable">
+                  <thead>
+                    <th>Image</th>
+                    <th *ngIf="permission.show_user_column">Added By</th>
+                    <th>Note</th>
+                    <th>Added Date</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of dataHistory">
+                      <td>
+                        <button mat-button *ngIf="!item.file" disabled><mat-icon>image</mat-icon></button>
+                        <button mat-button *ngIf="item.file" (click)="openImage(item.file)" ><mat-icon>image</mat-icon></button>
+                      </td>
+                      <td *ngIf="permission.show_user_column">{{ item.username}}</td>
+                      <td>{{ item.note}}</td>
+                      <td>{{ item.date_added}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Assign To User</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>Select User</mat-label>
+              <input type="text" matInput [formControl]="userNameCtrl" [matAutocomplete]="auto_user">
+              <mat-autocomplete #auto_user="matAutocomplete" [displayWith]="displayUsers" (optionSelected)="onUserSelectionChanged($event)">
+                <mat-option *ngFor="let option of filterUsers | async" [value]="option">
+                  {{option.firstname}} {{option.lastname}}
+                </mat-option>
+              </mat-autocomplete>
+
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col hprint">
+
+
+        <mat-card class="cs-card" formGroupName="history">
+          <mat-card-header>
+            <mat-card-title>Publish</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput [min]="minDate" [matDatepicker]="pickpicker" formControlName="date" placeholder="Date">
+              <mat-datepicker-toggle matSuffix [for] = "pickpicker"></mat-datepicker-toggle>
+              <mat-datepicker #pickpicker></mat-datepicker>
+           </mat-form-field>
+            <mat-form-field>
+              <mat-label>Note</mat-label>
+              <textarea matInput formControlName="note"></textarea>
+            </mat-form-field>
+            <div class="fupload">
+              <label for="ifile">Attach Image</label>
+              <input type="file" id="ifile" (change)="onFileChange($event)" accept=".png, .jpg, .jpeg">
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+        <div class="form-add">
+          <button mat-raised-button color="warn" disabled *ngIf="submitted">
+            <span >Wait</span>
+          </button>
+          <button mat-raised-button color="warn" (click)="submitForm()" [disabled]="!dataForm.valid" *ngIf="!submitted">
+            <span *ngIf="!editMode">Submit</span>
+            <span *ngIf="editMode">Update</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</form>
+
+
+<ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+	<ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+    <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+  </ng-container>
+</ng-template>

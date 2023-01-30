@@ -1,0 +1,10 @@
+<h2 mat-dialog-title class="pop_header"><mat-icon mat-list-icon>edit</mat-icon> Update Your Notes</h2>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <textarea matInput [formControl]="noteControl">{{ data.item.note }}</textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="submitForm()" color="warn">Update</button>
+  <button mat-button (click)="onNoClick()">Close</button>
+</div>

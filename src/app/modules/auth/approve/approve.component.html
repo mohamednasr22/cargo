@@ -1,0 +1,8 @@
+<div class="container gbox">
+  <img [src]="baseurl + 'assets/images/logo.jpeg'" class="llogo"/>
+  <h1>Approval Request</h1>
+  <p *ngIf="!submitted">Wait...</p>
+  <p *ngIf="approved == 1">Your account has been successfully approved.</p>
+  <p *ngIf="approved == 2">Something wrong happen.</p>
+  <button routerLink="/" *ngIf="submitted">Home Page</button>
+</div>

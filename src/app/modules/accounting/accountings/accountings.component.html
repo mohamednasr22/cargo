@@ -1,0 +1,215 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>money</mat-icon> Accounting</span>
+  <div class="cs-right">
+    <a [routerLink]="'/admin/accountings/add'" mat-flat-button mat-ripple *ngIf="pms.add">
+      <mat-icon mat-list-icon>add_circle_outline</mat-icon>  Add New
+    </a>
+    <button mat-flat-button (click)="printPage()"><svg><use xlink:href="#print_ico"></use></svg></button>
+    <button mat-flat-button (click)="savePDF()"><svg><use xlink:href="#pdf_ico"></use></svg></button>
+  </div>
+</div>
+<div class="cs-box">
+  <div class="form-filter">
+    <form>
+      <mat-form-field>
+        <mat-label>Booking No</mat-label>
+        <input type="text" matInput [formControl]="bookingNo">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Container No</mat-label>
+        <input type="text" matInput [formControl]="containerNo">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Invoice No</mat-label>
+        <input type="text" matInput [formControl]="invoiceNo">
+      </mat-form-field>
+
+      <mat-form-field>
+          <mat-label>Type</mat-label>
+          <mat-select [formControl]="invoiceTypeId">
+            <mat-option value="">All Types</mat-option>
+            <mat-option *ngFor="let option of invoice_types" [value]="option.id">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+      <!-- <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="invoiceStatusId">
+          <mat-option value="">All Statuses</mat-option>
+          <mat-option *ngFor="let option of invoice_statuses" [value]="option.id">
+            {{option.name}}
+          </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+
+
+    <div class="filter-btn">
+      <button mat-raised-button color="warn" (click)="resetFilter()">Reset</button>
+    </div>
+    </form>
+
+  </div>
+
+  <div class="mat-elevation-z8">
+    <div *ngIf="loaded; else rowsPlaceHolder"></div>
+    <div class="loading-shade" *ngIf="loaded && (isLoadingResults || isRateLimitReached)">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" [hidden]="!loaded" matSort matSortDisableClear matSortActive="booking_no" matSortDirection="desc" id="content">
+
+      <!-- Shipper Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Shipper </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+
+        <td mat-footer-cell *matFooterCellDef> Total </td>
+      </ng-container>
+
+      <!-- Booking Column -->
+      <ng-container matColumnDef="booking_no">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Booking No </th>
+        <td mat-cell *matCellDef="let element"> {{element.booking_no}} </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+      <!-- Container Column -->
+      <ng-container matColumnDef="container_no">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Container No </th>
+        <td mat-cell *matCellDef="let element"> {{element.container_no}} </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+      <!-- Invoice No Column -->
+      <ng-container matColumnDef="invoice_no">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Invoice No </th>
+        <td mat-cell *matCellDef="let element"> {{element.invoice_no}} </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+      <!-- Invoice Type Column -->
+      <ng-container matColumnDef="invoice_type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Invoice Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.invoice_type}} </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Invoice Amount </th>
+        <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{ resultsTotalAmount}} </td>
+      </ng-container>
+
+      <!-- Paid Column -->
+      <ng-container matColumnDef="paid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Invoice Paid </th>
+        <td mat-cell *matCellDef="let element"> {{ element.paid }} </td>
+        <td mat-footer-cell *matFooterCellDef> {{ resultsTotalPaid }} </td>
+      </ng-container>
+
+      <!-- Balance Column -->
+      <ng-container matColumnDef="balance">
+        <th mat-header-cell *matHeaderCellDef disableClear> Balance </th>
+        <td mat-cell *matCellDef="let element"> {{ element.amount - element.paid}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{ resultsTotalAmount - resultsTotalPaid}} </td>
+      </ng-container>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="date_added">
+        <th mat-header-cell *matHeaderCellDef disableClear> Invoice Date </th>
+        <td mat-cell *matCellDef="let element"> {{ element.date_added | date}} </td>
+        <td mat-footer-cell *matFooterCellDef>  </td>
+      </ng-container>
+
+      <!-- Files Column -->
+      <ng-container matColumnDef="files">
+        <th mat-header-cell *matHeaderCellDef> Files </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="openFiles(element.invoice_id)">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+        </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.invoice_status}} </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef> Gallery </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="openPhoto(element.invoice_id)">
+            <mat-icon>image</mat-icon>
+          </button>
+        </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+      <!-- Image Column -->
+      <!-- <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef> Gallery </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="openPhoto(element.invoice_id)">
+            <mat-icon>image</mat-icon>
+          </button>
+        </td>
+      </ng-container> -->
+
+
+      <!-- View Column -->
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef> View </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button [routerLink]="['/admin/accountings/info', element.invoice_id]">
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+
+      <!-- Update Column -->
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef> Update </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="Edit" [routerLink]="['/admin/accountings/', element.invoice_id]">
+            <mat-icon mat-list-icon>edit</mat-icon>
+          </button>
+        </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+      <!-- Delete Column -->
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="Edit" (click)="deleteInvoice(element.invoice_id)">
+            <mat-icon mat-list-icon>delete</mat-icon>
+          </button>
+        </td>
+        <td mat-footer-cell *matFooterCellDef> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns" class="f-row"></tr>
+    </table>
+    <mat-paginator [length]="resultsLength" [pageSizeOptions]="[10, 20, 30, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
+
+<ng-template #rowsPlaceHolder>
+  <app-skeleton type="rows"></app-skeleton>
+</ng-template>

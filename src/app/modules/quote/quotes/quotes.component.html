@@ -1,0 +1,57 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>format_quote</mat-icon> Quotes</span>
+  <div class="cs-right" *ngIf="pms.update">
+    <a [routerLink]="'/admin/quote/update'" mat-flat-button mat-ripple>
+      <mat-icon mat-list-icon>edit</mat-icon>  Update
+    </a>
+    <button mat-flat-button (click)="printPage()"><svg><use xlink:href="#print_ico"></use></svg></button>
+    <button mat-flat-button (click)="savePDF()"><svg><use xlink:href="#pdf_ico"></use></svg></button>
+  </div>
+</div>
+<div class="cs-box" >
+  <div>
+    <div class="cs_aux_field">
+        <label>View Quotes</label>
+        <div class="cs_aux_date">
+          <dp-date-picker  theme="dp-material" mode='month' #datePicker [formControl]="dateInput"></dp-date-picker>
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Select Destination</mat-label>
+          <mat-select [formControl]="destinationInput">
+            <mat-option *ngFor="let item of destinations_list" [value]="item.id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="warn" (click)="viewQuote()">VIEW</button>
+    </div>
+
+
+  </div>
+  <div class="cs-mat-table" id="content" *ngIf="loaded; else rowsPlaceHolder">
+    <table>
+      <thead>
+        <tr>
+          <th>USA</th><th>2 Auto</th><th>3 Auto</th><th>4 Auto</th><th>Regular Auto</th><th>Large Auto</th><th>Oversize Auto</th><th>40 HC FULL</th><th>45 HC FULL</th></tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let item of ldata">
+          <td>{{ item.name }}</td>
+          <td *ngFor="let idata of item.data">
+            <span class="dr"><b>40 HC</b><b>45 HC</b></span><span class="dr n"><b>{{ idata.h40 }}</b><b>{{ idata.h45 }}</b></span>
+          </td>
+          <td>{{ item.h40}}</td>
+          <td>{{ item.h45}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+    <p class="pnote"><mat-icon>warning</mat-icon> Valid until the end of the month.</p>
+  </div>
+</div>
+
+
+<ng-template #rowsPlaceHolder>
+  <app-skeleton type="rows"></app-skeleton>
+</ng-template>

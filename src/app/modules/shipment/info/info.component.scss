@@ -1,0 +1,78 @@
+.pck1 , .pck2 {
+  display: table;
+  width: 100%;
+  background: #f9f9f9;
+  border: 1px solid #ececec;
+  border-radius: 5px;
+}
+
+.pck1>div {
+  display: table-cell;
+  width: 20%;
+  padding: 10px 7px 10px;
+  border-right: 1px solid #ececec;
+  height: 100%;
+  position: relative;
+  word-break: break-all;
+  &:last-of-type{
+    border-right: none;
+  }
+}
+
+.pck1>div>h2 , .pck2>div>h2 {
+  margin: 0px;
+}
+
+.pck1>div>h4 , .pck2>div>h4 {
+  margin: 0px;
+}
+
+.pck2>div {
+  display: table-cell;
+  width: 80%;
+  padding: 10px 7px 10px;
+  border-right: 1px solid #ececec;
+  height: 100%;
+  position: relative;
+  word-break: break-all;
+  &:last-of-type{
+    border-right: none;
+  }
+  &:nth-of-type(2){
+    width: 19%;
+  }
+}
+
+.hdownload{
+  line-height: 1;
+  margin-top: -10px;
+  min-width: 20px;
+  padding: 0px 10px;
+}
+
+
+@media screen and (max-width:900px){
+  .pck1>div {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .pck2>div {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    &:nth-of-type(2){
+      width: 100%;
+    }
+  }
+
+  .cs-plist>div{
+    margin-bottom: 20px;
+  }
+
+  .cs-plist>div:last-of-type{
+    margin-bottom: 0px;
+  }
+
+}

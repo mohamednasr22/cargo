@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Add New</h1>
+<div class="field-full">
+
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input type="text" matInput>
+  </mat-form-field>
+
+  <div class="fupload">
+    <label for="ifile">Image Profile</label>
+    <input type="file" id="ifile">
+  </div>
+
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Add Attachment</button>
+</mat-dialog-actions>

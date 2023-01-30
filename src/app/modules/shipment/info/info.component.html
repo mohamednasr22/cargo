@@ -1,0 +1,220 @@
+<div class="cs-page-header">
+  <span *ngIf="editMode"><mat-icon mat-list-icon>edit</mat-icon> Shipment Info</span>
+  <div class="cs-right">
+    <a [routerLink]="'/admin/shipments/list'" mat-flat-button>
+      <mat-icon mat-list-icon>keyboard_arrow_left</mat-icon>  Back
+    </a>
+    <ng-container *ngIf="shipmentId">
+      <button mat-flat-button (click)="printPage()"><svg><use xlink:href="#print_ico"></use></svg></button>
+      <button mat-flat-button (click)="savePDF()"><svg><use xlink:href="#pdf_ico"></use></svg></button>
+    </ng-container>
+
+  </div>
+</div>
+
+<div class="cs-box" *ngIf="info" id="content">
+  <div class="col col3-1">
+    <div>
+      <div class="main_header" *ngIf="shipmentId">
+        Tracking ID {{shipmentId | zeroid}}
+      </div>
+      <div class="col col2">
+        <div>
+          <mat-card class="cs-card">
+            <mat-card-header>
+              <mat-card-title>
+                Shipper Information
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <h2>Shipper Name</h2>
+              <h4>{{ info.shipper.name }}</h4>
+
+              <h2>Type</h2>
+              <h4>{{ shipperType }}</h4>
+
+              <h2>Phone Number</h2>
+              <h4>{{ info.shipper.phone }}</h4>
+
+              <h2>Address</h2>
+              <h4>{{ info.shipper.address }}</h4>
+
+              <h2>Email</h2>
+              <h4>{{ info.shipper.email }}</h4>
+
+              <h2>EIN|Passport No</h2>
+              <h4>{{ info.shipper.ein }}</h4>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div>
+          <mat-card class="cs-card">
+            <mat-card-header>
+              <mat-card-title>Receiver Information</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <h2>Receiver Name</h2>
+              <h4>{{ info.receiver.name }}</h4>
+
+              <h2>Phone Number</h2>
+              <h4>{{ info.receiver.phone }}</h4>
+
+              <h2>Address</h2>
+              <h4>{{ info.receiver.address }}</h4>
+
+              <h2>Email</h2>
+              <h4>{{ info.receiver.email }}</h4>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Shipment Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <div class="cs-plist">
+                <div *ngFor="let package of info.packages;let i = index">
+
+                  <div class="pck1" *ngIf="package.type == 1">
+
+                    <div>
+                      <h2>Year</h2>
+                      <h4>{{ package.year }}</h4>
+                    </div>
+
+                    <div>
+                      <h2>Model</h2>
+                      <h4>{{ package.model }}</h4>
+
+                    </div>
+
+                    <div>
+                      <h2>Make</h2>
+                      <h4>{{ package.mark }}</h4>
+                    </div>
+
+                    <div>
+                      <h2>Vin</h2>
+                      <h4>{{ package.vin }}</h4>
+                    </div>
+
+
+
+                    <div>
+                      <h2>Value</h2>
+                      <h4>${{ package.value }}</h4>
+                    </div>
+
+                  </div>
+                  <div class="pck2" *ngIf="package.type == 2">
+                    <div>
+                      <h2>Description</h2>
+                      <h4>{{ package.description }}</h4>
+                    </div>
+
+                    <div>
+                      <h2>Value</h2>
+                      <h4>${{ package.value }}</h4>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col" *ngIf="shipmentHistory">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Shipment History</mat-card-title>
+            <button class="hdownload" mat-button (click)="downloadShipmentGallery()"><mat-icon>cloud_download</mat-icon></button>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <div>
+                <table class="gtable">
+                  <thead>
+                    <th>Shipment Status</th>
+                    <th>Image</th>
+                    <th *ngIf="permission.show_user_column">Added By</th>
+                    <th>Note</th>
+                    <th>Added Date</th>
+                    <th>Actions</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of info.history">
+                      <td>{{ item.name}}</td>
+                      <td>
+                        <button mat-button *ngIf="!item.file" disabled><mat-icon>image</mat-icon></button>
+                        <button mat-button (click)="openGallery(item)" *ngIf="item.file"><mat-icon>image</mat-icon></button>
+                      </td>
+                      <td *ngIf="permission.show_user_column">{{ item.username}}</td>
+                      <td>{{ item.note}}</td>
+                      <td>{{ item.date_added}}</td>
+                      <td>
+                        <button mat-button (click)="openEditFiles(item)" *ngIf="permission.control_history_gallery && item.file"><mat-icon>edit</mat-icon></button>
+                        <button mat-button (click)="downloadGallery(item)" *ngIf="item.file"><mat-icon>cloud_download</mat-icon></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Other Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h2>Date</h2>
+            <h4>{{ info.other.date }}</h4>
+
+            <h2>Cargo Type</h2>
+            <h4>{{ containerType }}</h4>
+
+            <h2>Title</h2>
+            <h4>{{ info.other.title | yesno }}</h4>
+
+            <h2>Key</h2>
+            <h4>{{ info.other.akey | yesno }}</h4>
+
+            <h2>Destination</h2>
+            <h4>{{ info.other.destination_name }}</h4>
+
+            <h2>Warehouse</h2>
+            <h4>{{ info.other.warehouse_name }}</h4>
+
+
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+	<ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+    <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+  </ng-container>
+</ng-template>

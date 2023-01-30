@@ -1,0 +1,1 @@
+{"location":{"is_moving":false,"uuid":"2ca9aea1-61a6-4e08-9e8e-790000c09a95","timestamp":"2020-05-09T22:49:50.887Z","odometer":0,"coords":{"latitude":29.9872582,"longitude":31.3374249,"accuracy":21.5,"speed":-1,"heading":-1,"altitude":151.6},"activity":{"type":"still","confidence":100},"battery":{"is_charging":true,"level":0.43},"extras":{}},"code":"VWUHGJB5"}

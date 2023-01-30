@@ -1,0 +1,54 @@
+
+.item {
+  background: #fbfbfb;
+    border-radius: 4px;
+    border: 1px solid #ececec;
+    margin-bottom: 10px;
+    padding: 10px;
+    display: inline-block;
+    width: 100%;
+  b {
+    display: block;
+  }
+
+  span {
+    cursor: pointer;
+    &:nth-of-type(1){
+      display: inline-block;
+      padding-right: 50px;
+      vertical-align: bottom;
+      padding-top: 10px;
+      font-weight: bold;
+      a{
+        padding: 9px;
+        float: left;
+        display: inline-block;
+      }
+    }
+    &:nth-of-type(2){
+      float:right;
+      a{
+        text-decoration: none;
+        color: #000;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 3px;
+        line-height: 1;
+      }
+    }
+  }
+
+  &:last-of-type {
+    margin-bottom: 0px;
+  }
+
+}
+
+.files_list{
+  width: 500px;
+}
+
+
+.loader_spinner {
+  margin: 20px auto;
+}

@@ -1,0 +1,22 @@
+
+
+table{
+  width: 100%;
+}
+
+
+
+
+
+.mat-column-update,.mat-column-delete {
+  width: 66px;
+  text-align: center !important;
+}
+
+.mat-column-delete mat-icon {
+  color: #ea4141;
+}
+
+.mat-column-update mat-icon {
+  color: #2ba7ff;
+}

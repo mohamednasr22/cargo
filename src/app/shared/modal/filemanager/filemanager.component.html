@@ -1,0 +1,15 @@
+<div class="container">
+  <h1>File Manager <mat-spinner *ngIf="submitted" diameter="28"></mat-spinner></h1>
+  <div class="list">
+    <div *ngFor="let itm of data.item.file; let i = index;">
+      <img [src]="itm" />
+      <div class="actions">
+        <div class="btn">
+          <label for="myimage{{i}}"><mat-icon mat-list-icon>edit</mat-icon></label>
+          <input id="myimage{{i}}" type="file" style="display: none;" (change)="onFileChange($event,i,itm)" accept=".png, .jpg, .jpeg"/>
+        </div>
+        <button mat-button (click)="deleteItem(itm)"><mat-icon mat-list-icon>delete</mat-icon></button>
+      </div>
+    </div>
+  </div>
+</div>

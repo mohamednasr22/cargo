@@ -1,0 +1,49 @@
+.cs-box{
+  display: inline-block;
+  width: 100%;
+  padding: 20px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  background: #fff;
+}
+
+table{
+  width: 100%;
+}
+
+
+
+
+.mat-column-update,.mat-column-delete {
+  width: 100px;
+  text-align: center !important;
+}
+
+.mat-column-delete mat-icon {
+  color: #ea4141;
+}
+
+.mat-column-update mat-icon {
+  color: #2ba7ff;
+}
+
+
+.filter-btn {
+  display: inline-block;
+  width: 110px;
+}
+
+.filter-btn button {
+  width: 100%;
+}
+
+mat-form-field {
+  padding: 0px 0px 20px 0px;
+  margin-right: 20px;
+
+  ::ng-deep{
+    .mat-form-field-infix{
+      padding: 13px 0px;
+    }
+  }
+}
+

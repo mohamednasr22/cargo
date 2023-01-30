@@ -1,0 +1,292 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>stars</mat-icon> Shipments</span>
+  <div class="cs-right">
+    <a [routerLink]="'/admin/shipments/add'" mat-flat-button *ngIf="pms.add">
+      <mat-icon mat-list-icon>add_circle_outline</mat-icon>  Add Shipment
+    </a>
+    <button mat-flat-button (click)="printPage()"><svg><use xlink:href="#print_ico"></use></svg></button>
+    <button mat-flat-button (click)="savePDF()"><svg><use xlink:href="#pdf_ico"></use></svg></button>
+  </div>
+</div>
+<div class="cs-box">
+  <div class="form-filter">
+    <form>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="shipmentStatusId">
+          <mat-option value="">All Statuses</mat-option>
+          <mat-option *ngFor="let option of shippment_statuses" [value]="option.id">
+            {{option.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Tracking Id</mat-label>
+        <input type="text" matInput [formControl]="trackingId">
+
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Shipper Name</mat-label>
+        <input type="text" matInput [formControl]="shipperName">
+
+      </mat-form-field>
+
+      <!-- <mat-form-field>
+        <mat-label>Receiver Name</mat-label>
+        <input type="text" matInput [formControl]="receiverName">
+      </mat-form-field> -->
+      <mat-form-field>
+        <mat-label>Warehouse</mat-label>
+        <mat-select [formControl]="warehouseId">
+          <mat-option value="">All Warehouses</mat-option>
+          <mat-option *ngFor="let option of warehouses_list" [value]="option.id">
+            {{option.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Destination</mat-label>
+        <input type="text" matInput [formControl]="destinationName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Vehicle(Column)</mat-label>
+        <mat-select [formControl]="shipmentVehicle">
+          <mat-option value="0"></mat-option>
+          <mat-option value="year">Year</mat-option>
+          <mat-option value="model">Model</mat-option>
+          <mat-option value="mark">Make</mat-option>
+          <mat-option value="vin">Vin</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Vehicle(Column Value)</mat-label>
+        <input type="text" matInput [formControl]="shipmentVehicleValue" autocomplete="off">
+      </mat-form-field>
+
+
+
+      <div class="filter-btn">
+        <button mat-raised-button color="warn" (click)="resetFilter()">Reset</button>
+      </div>
+    </form>
+
+  </div>
+  <div class="mat-elevation-z8">
+    <div *ngIf="loaded; else rowsPlaceHolder">
+
+    </div>
+    <div class="loading-shade" *ngIf="loaded && (isLoadingResults || isRateLimitReached)">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+    <table [hidden] = "!loaded" mat-table [dataSource]="dataSource" multiTemplateDataRows matSort matSortDisableClear matSortActive="shipment_id" matSortDirection="desc" #content id="content">
+
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+          <div class="sp-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="sp-element-diagram">
+              <div *ngFor="let package of element.packages;let i = index">
+
+                <div class="pck1" *ngIf="package.type == 1">
+
+                  <div>
+                    <h2>Year</h2>
+                    <h4>{{ package.year }}</h4>
+                  </div>
+
+                  <div>
+                    <h2>Model</h2>
+                    <h4>{{ package.model }}</h4>
+
+                  </div>
+
+                  <div>
+                    <h2>Make</h2>
+                    <h4>{{ package.mark }}</h4>
+                  </div>
+
+                  <div>
+                    <h2>Vin</h2>
+                    <h4>{{ package.vin }}</h4>
+                  </div>
+
+
+
+                  <div>
+                    <h2>Value</h2>
+                  <h4>{{ package.value }}</h4>
+                  </div>
+
+                </div>
+                <div class="pck2" *ngIf="package.type == 2">
+                  <div>
+                    <h2>Description</h2>
+                    <h4>{{ package.description }}</h4>
+                  </div>
+
+                  <div>
+                    <h2>Value</h2>
+                    <h4>{{ package.value }}</h4>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="shipment_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Tracking Id </th>
+        <td mat-cell *matCellDef="let element" (click)="expandedElement = expandedElement === element ? null : element" > {{element.shipment_id | zeroid}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="shipper_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Shipper Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.shipper_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="receiver_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Receiver Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.receiver_name}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="destination_name" disableClear>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Destination </th>
+        <td mat-cell *matCellDef="let element"> {{element.destination_name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="warehouse_name" disableClear>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Warehouse </th>
+        <td mat-cell *matCellDef="let element"> {{element.warehouse_name | none}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.shipment_status | none}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="container_type">
+        <th mat-header-cell *matHeaderCellDef> Container Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.container_type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="container_no">
+        <th mat-header-cell *matHeaderCellDef> Container No </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button color="primary" *ngIf="element.container_no" [routerLink]="['/admin/containers/info', element.container_id]">{{element.container_no  | none}}</button>
+          <button mat-button color="primary" *ngIf="!element.container_no">{{element.container_no  | none}}</button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.title | yesno}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="akey">
+        <th mat-header-cell *matHeaderCellDef> Key </th>
+        <td mat-cell *matCellDef="let element"> {{element.akey | yesno}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef> Gallery </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="openPhoto(element.shipment_id)">
+            <mat-icon>image</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="files">
+        <th mat-header-cell *matHeaderCellDef> Files </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="openFiles(element.shipment_id)">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef> View </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" [routerLink]="['/admin/shipments/info', element.shipment_id]">
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef> Update </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="pms.disable_after_pending">
+            <button mat-icon-button aria-label="Edit" [routerLink]="['/admin/shipments/', element.shipment_id]" *ngIf="element.shipment_status_id == pending_status_id">
+              <mat-icon mat-list-icon>edit</mat-icon>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!pms.disable_after_pending">
+            <button mat-icon-button aria-label="Edit" [routerLink]="['/admin/shipments/', element.shipment_id]">
+              <mat-icon mat-list-icon>edit</mat-icon>
+            </button>
+          </ng-container>
+
+
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="pms.disable_after_pending">
+            <button mat-icon-button aria-label="Edit" (click)="deleteShipment(element.shipment_id)" *ngIf="element.shipment_status_id == pending_status_id">
+              <mat-icon mat-list-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!pms.disable_after_pending">
+            <button mat-icon-button aria-label="Edit" (click)="deleteShipment(element.shipment_id)">
+              <mat-icon mat-list-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+          class="sp-element-row"
+          [class.sp-expanded-row]="expandedElement === element"
+          >
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="sp-detail-row"></tr>
+
+
+      <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+      class="sp-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="sp-detail-row"></tr> -->
+    </table>
+
+    <mat-paginator [length]="resultsLength" [pageSize]="pageSize"></mat-paginator>
+  </div>
+</div>
+
+
+<ng-template #rowsPlaceHolder>
+  <app-skeleton type="rows"></app-skeleton>
+</ng-template>
+
+
+<ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+	<ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+    <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,48 @@
+h1{
+  text-align: center;
+}
+canvas{
+  border: 1px solid #e6e6e6;
+  box-shadow: 0px 0px 10px 2px #dcdcdc;
+  width: 100%;
+}
+
+.btns{
+  text-align: center;
+  button{
+    cursor: pointer;
+    padding: 20px 40px;
+    border: none;
+    background: #3790d0;
+    color: #fff;
+    margin: 10px 5px;
+    font-size: 18px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 2px #c1c1c1;
+
+  }
+}
+
+
+
+.dmbtn{
+  display: inline-block;
+  color: #3790d0;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+mat-spinner{
+  margin: 0px auto;
+}
+
+
+
+.gbox{
+  text-align: center;
+  padding: 20px;
+}
+
+.gbox img {
+  width: 171px;
+}

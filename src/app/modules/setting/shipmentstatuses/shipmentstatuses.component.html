@@ -1,0 +1,51 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>list</mat-icon> Shipment Statuses</span>
+  <div class="cs-right">
+    <button mat-raised-button (click)="open()">
+      <mat-icon mat-list-icon>add_circle_outline</mat-icon>  Add New
+    </button>
+  </div>
+</div>
+<div class="cs-box">
+  <div class="mat-elevation-z8" *ngIf="loaded; else rowsPlaceHolder">
+    <table mat-table [dataSource]="dataSource" >
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+
+
+      <!-- Update Column -->
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef> Update </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="Edit" (click)="open(element)">
+            <mat-icon mat-list-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Delete Column -->
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="Edit" (click)="delete(element.id)">
+            <mat-icon mat-list-icon>delete</mat-icon>
+          </button>
+         </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
+
+
+
+<ng-template #rowsPlaceHolder>
+  <app-skeleton type="rows"></app-skeleton>
+</ng-template>

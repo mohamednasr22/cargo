@@ -1,0 +1,69 @@
+:host{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.rightside{
+  width: 50%;
+}
+
+.open_close_sidebar {
+  position: fixed;
+  left: 300px;
+  top: 50%;
+  z-index: 999;
+  width: 20px;
+  background: #198dca;
+  height: 70px;
+  overflow: hidden;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s ease-out;
+  mat-icon {
+      margin-top: 24px;
+      margin-left: 4px;
+  }
+  &.active{
+    left: 0px;
+    transform:rotate(180deg);
+  }
+}
+
+
+.cs-container{
+  padding:20px;
+  flex:1;
+}
+
+mat-drawer {
+  width: 300px;
+}
+
+mat-drawer-container {
+  height: 100%;
+}
+
+mat-drawer-content{
+  display: flex;
+  flex-direction: column;
+}
+
+
+@media screen and (max-width:900px){
+  .open_close_sidebar{
+    display: none;
+  }
+}
+
+
+@media print{
+  :host{
+    display: block;
+    height: auto;
+  }
+
+  app-footer{
+    display: none;
+  }
+}

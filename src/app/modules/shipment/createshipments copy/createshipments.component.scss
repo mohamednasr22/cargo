@@ -1,0 +1,75 @@
+
+mat-card{
+  ::ng-deep{
+    .mat-card-header-text {
+      margin: 0px;
+    }
+  }
+}
+mat-form-field {
+  width: 100%;
+
+  ::ng-deep{
+    .mat-form-field-infix {
+      padding: 10px 0px;
+    }
+  }
+}
+
+.form-add {
+  display: inline-block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.form-add button {
+  width: 100%;
+}
+
+.frtoggle{
+  display: inline-block;
+    float: right;
+    margin-top: -24px;
+    transform: translateY(15px);
+}
+
+.cs-plist{
+  mat-form-field{
+    width: 17%;
+    padding-right: 3%;
+    &.long_txt {
+      width: 68% !important;
+    }
+  }
+}
+
+
+
+.fipt {
+  width: 15%;
+  display: inline-block;
+}
+
+.fipt input {
+  display: none;
+}
+
+.fipt label {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  background: #ececec;
+  padding: 12px 1px;
+  border-radius: 4px;
+  border: 1px solid #c7c7c7;
+  font-weight: bold;
+}
+
+.cs-plist>div {
+  display: block;
+}
+
+.cs-button-holder{
+  display: block;
+  padding: 10ox 0px;
+}

@@ -1,0 +1,14 @@
+POST /index.php?route=api/driver/locations HTTP/1.1
+
+HTTP headers:
+User-Agent: okhttp/3.12.1
+Accept-Encoding: gzip
+Connection: close
+X-Url-Scheme: https
+X-Forwarded-Proto: https
+X-Real-Ip: 41.69.121.207
+X-Forwarded-Host: api.lets-feast.com
+Host: api.lets-feast.com
+
+Request body:
+{"location":{"is_moving":false,"uuid":"9f268038-63c7-435b-98a6-1c377d0198bd","timestamp":"2020-05-09T22:45:08.000Z","odometer":0,"coords":{"latitude":29.987233,"longitude":31.3372635,"accuracy":5.6,"speed":0.03,"heading":329.39,"altitude":151.9},"activity":{"type":"still","confidence":100},"battery":{"is_charging":true,"level":0.42},"extras":{}},"code":"VWUHGJB5"}

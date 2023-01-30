@@ -1,0 +1,222 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>view_quilt</mat-icon> Containers</span>
+  <div class="cs-right">
+    <a [routerLink]="'/admin/containers/add'" mat-flat-button mat-ripple *ngIf="pms.add">
+      <mat-icon mat-list-icon>add_circle_outline</mat-icon>  Add New Container
+    </a>
+    <button mat-flat-button (click)="printPage()"><svg><use xlink:href="#print_ico"></use></svg></button>
+    <button mat-flat-button (click)="savePDF()"><svg><use xlink:href="#pdf_ico"></use></svg></button>
+
+    <!-- <button mat-raised-button><mat-icon mat-list-icon>add_circle_outline</mat-icon> Add New Container</button> -->
+  </div>
+</div>
+<div class="cs-box">
+  <div class="form-filter">
+    <form>
+      <mat-form-field>
+        <mat-label>Booking No</mat-label>
+        <input type="text" matInput [formControl]="bookingNo">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Container No</mat-label>
+        <input type="text" matInput [formControl]="containerNo">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Port Of Loading</mat-label>
+        <input type="text" matInput [formControl]="polCtrl">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Port Of Discharge</mat-label>
+        <input type="text" matInput [formControl]="podCtrl">
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="containerStatusId">
+          <mat-option value="">All Statuses</mat-option>
+          <mat-option *ngFor="let option of container_statuses" [value]="option.id">
+            {{option.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="filter-btn">
+        <button mat-raised-button color="warn" (click)="resetFilter()">Reset</button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="mat-elevation-z8">
+    <div *ngIf="loaded; else rowsPlaceHolder"></div>
+    <div class="loading-shade" *ngIf="loaded && (isLoadingResults || isRateLimitReached)">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+
+    <table mat-table [hidden]="!loaded" [dataSource]="dataSource" matSort matSortDisableClear matSortActive="shipment_id" matSortDirection="desc" id="content">
+      <!-- Booking Column -->
+      <ng-container matColumnDef="booking_no">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Booking No </th>
+        <td mat-cell *matCellDef="let element"> {{element.booking_no}} </td>
+      </ng-container>
+
+      <!-- Container Column -->
+      <ng-container matColumnDef="container_no">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Container No </th>
+        <td mat-cell *matCellDef="let element"> {{element.container_no}} </td>
+      </ng-container>
+
+      <!-- Port Of Loading Column -->
+      <ng-container matColumnDef="port_of_loading">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Port Of Loading </th>
+        <td mat-cell *matCellDef="let element"> {{element.port_of_loading}} </td>
+      </ng-container>
+
+      <!-- Port Of Discharge Column -->
+      <ng-container matColumnDef="port_of_discharge">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Port Of Discharge </th>
+        <td mat-cell *matCellDef="let element"> {{element.port_of_discharge}} </td>
+      </ng-container>
+
+      <!-- Sailing Column -->
+      <ng-container matColumnDef="sailing_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Sailing Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.sailing_date | date }} </td>
+      </ng-container>
+
+      <!-- Courier Column -->
+      <ng-container matColumnDef="courier">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Courier </th>
+        <td mat-cell *matCellDef="let element"> <a [href]="generateLink(element.courier_url)" target="_blank">{{element.courier_name}}</a> </td>
+      </ng-container>
+
+      <!-- Eta Column -->
+      <ng-container matColumnDef="eta">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Eta </th>
+        <td mat-cell *matCellDef="let element"> {{element.eta | date}} </td>
+      </ng-container>
+
+      <!-- Image Column -->
+      <!-- <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef> Gallery </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="openPhoto(element.container_id)">
+            <mat-icon>image</mat-icon>
+          </button>
+        </td>
+      </ng-container> -->
+
+      <!-- Files Column -->
+      <!-- <ng-container matColumnDef="files">
+        <th mat-header-cell *matHeaderCellDef> Files </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="openFiles(element.container_id)">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+        </td>
+      </ng-container> -->
+
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.container_status}} </td>
+      </ng-container>
+
+      <!-- View Column -->
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef> View </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" [routerLink]="['/admin/containers/info', element.container_id]">
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+          </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item color="warn" (click)="openPhoto(element.container_id)">
+              <mat-icon>image</mat-icon>
+              <span>Gallery</span>
+            </button>
+            <button mat-menu-item color="warn" (click)="openFiles(element.container_id)">
+              <mat-icon>attach_file</mat-icon>
+              <span>Files</span>
+            </button>
+
+            <ng-container *ngIf="pms.update">
+              <button mat-menu-item aria-label="Edit" [routerLink]="['/admin/containers/', element.container_id]">
+                <mat-icon mat-list-icon>edit</mat-icon>
+                <span>Update</span>
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="pms.delete">
+              <button mat-menu-item aria-label="Edit" (click)="deleteContainer(element.container_id)">
+                <mat-icon mat-list-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button>
+            </ng-container>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+
+      <!-- Print Column -->
+      <!-- <ng-container matColumnDef="print">
+        <th mat-header-cell *matHeaderCellDef> Print </th>
+        <td mat-cell *matCellDef="let element"> <mat-icon mat-list-icon>print</mat-icon> </td>
+      </ng-container> -->
+
+      <!-- Update Column -->
+
+      <!--
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef> Update </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="Edit" [routerLink]="['/admin/containers/', element.container_id]">
+            <mat-icon mat-list-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+    -->
+
+      <!-- Delete Column -->
+      <!--
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="Edit" (click)="deleteContainer(element.container_id)">
+            <mat-icon mat-list-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+    -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [length]="resultsLength" [pageSizeOptions]="[10, 20, 30, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
+
+
+<ng-template #rowsPlaceHolder>
+  <app-skeleton type="rows"></app-skeleton>
+</ng-template>
+
+
+<ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+	<ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+    <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+  </ng-container>
+</ng-template>

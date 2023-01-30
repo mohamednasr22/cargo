@@ -1,0 +1,29 @@
+table {
+  width: 100%;
+}
+
+.aicon{
+  vertical-align: top;
+    margin-top: 6px;
+}
+
+
+mat-form-field {
+  padding: 0px 0px 20px 0px;
+  margin-right: 20px;
+
+  ::ng-deep{
+    .mat-form-field-infix{
+      padding: 13px 0px;
+    }
+  }
+}
+
+.filter-btn {
+  display: inline-block;
+  width: 110px;
+}
+
+.filter-btn button {
+  width: 100%;
+}

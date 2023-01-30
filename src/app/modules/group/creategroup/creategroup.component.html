@@ -1,0 +1,240 @@
+<div class="cs-page-header">
+  <span *ngIf="!editMode"><mat-icon mat-list-icon>add</mat-icon> Create Roles</span>
+  <span *ngIf="editMode"><mat-icon mat-list-icon>edit</mat-icon> Edit Roles</span>
+
+
+  <div class="cs-right">
+    <a [routerLink]="'/admin/groups/list'" mat-flat-button>
+      <mat-icon mat-list-icon>keyboard_arrow_left</mat-icon>  Back
+    </a>
+  </div>
+</div>
+
+<form class="cs-box" [formGroup]="dataForm">
+  <div class="col">
+    <mat-card class="cs-card">
+      <mat-card-header>
+        <mat-card-title>Role Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label>Role Name</mat-label>
+          <input type="text" matInput formControlName="name">
+        </mat-form-field>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <div class="col">
+
+    <mat-card class="cs-card">
+      <mat-card-header>
+        <mat-card-title>Roles Managment</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-accordion formGroupName="permission">
+          <mat-expansion-panel expanded="true" formGroupName="shipment">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b>Shipments Role</b>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="showall">Show Other Shipments(As Admin)</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="canassign">Can Assign To Users</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="view_shipper">View Shipper At List</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="control_history_gallery">Control History Gallery</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="add">Add Shipment</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="view">View Shipment</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="update">Update Shipment</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="delete">Delete Shipment</mat-slide-toggle>
+              </div>
+
+              <div class="check_item">
+                <mat-slide-toggle formControlName="key">Edit Key</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="title">Edit Title</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="disable_after_pending">Disable Edit After Accept</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="show_user_column">Show user column in history table</mat-slide-toggle>
+              </div>
+
+              <div class="check_list">
+                <h2>Allowed Shipment Statuses</h2>
+                <div>
+                  <mat-selection-list formControlName="statuses">
+                    <mat-list-option *ngFor="let item of shipment_statuses" [value]="item.id">
+                      {{item.name}}
+                    </mat-list-option>
+                  </mat-selection-list>
+                </div>
+              </div>
+
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel formGroupName="container">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b>Containers Roles</b>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="showall">Show Other Containers(As Admin)</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="add">Add Container</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="view">View Container</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="update">Update Container</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="delete">Delete Container</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="view_shared_container">View Shared Container</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="show_user_column">Show user column in history table</mat-slide-toggle>
+              </div>
+              <div class="check_list">
+                <h2>Allowed Container Statuses</h2>
+                <div>
+                  <mat-selection-list formControlName="statuses">
+                    <mat-list-option *ngFor="let item of container_statuses" [value]="item.id">
+                      {{item.name}}
+                    </mat-list-option>
+                  </mat-selection-list>
+
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel formGroupName="accounting">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b>Accounting Roles</b>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="showall">Show Other Accounting(As Admin)</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="view">View Section</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="add">Add Record</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="update">Update Record</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="delete">Delete Record</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="show_user_column">Show user column in history table</mat-slide-toggle>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel formGroupName="quotes">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b>Quotes Roles</b>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="view">View Quotes</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="update">Update Quotes</mat-slide-toggle>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel formGroupName="localtransportation">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b>Local Transportations Roles</b>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="view">View local transportation</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="update">Update local transportation</mat-slide-toggle>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel formGroupName="general">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <b>General</b>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="showshipper">Show Shippers(As Admin)</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="showreceiver">Show Receivers(As Admin)</mat-slide-toggle>
+              </div>
+              <div class="check_item">
+                <mat-slide-toggle formControlName="settings">Manage Settings</mat-slide-toggle>
+              </div>
+
+              <div class="check_item">
+                <mat-slide-toggle formControlName="users">Manage Users</mat-slide-toggle>
+              </div>
+
+              <div class="check_item">
+                <mat-slide-toggle formControlName="signatures">View Signatures</mat-slide-toggle>
+              </div>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+      </mat-card-content>
+    </mat-card>
+
+
+    <div class="form-add">
+      <button mat-raised-button color="warn" disabled *ngIf="submitted">
+        <span >Wait</span>
+      </button>
+      <button mat-raised-button color="warn" (click)="submitForm()" [disabled]="!dataForm.valid" *ngIf="!submitted">
+        <span *ngIf="!editMode">Submit</span>
+        <span *ngIf="editMode">Update</span>
+      </button>
+    </div>
+
+  </div>
+
+</form>
+

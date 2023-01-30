@@ -1,0 +1,168 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>edit</mat-icon> Container Info</span>
+  <div class="cs-right">
+    <a [routerLink]="'/admin/containers/list'" mat-flat-button>
+      <mat-icon mat-list-icon>keyboard_arrow_left</mat-icon>  Back
+    </a>
+    <ng-container *ngIf="containerId">
+      <button mat-flat-button (click)="printPage()"><svg><use xlink:href="#print_ico"></use></svg></button>
+      <button mat-flat-button (click)="savePDF()"><svg><use xlink:href="#pdf_ico"></use></svg></button>
+    </ng-container>
+  </div>
+</div>
+
+<div class="cs-box" *ngIf="info" id="content">
+  <div class="col">
+    <div>
+
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Container Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h2>Container No</h2>
+            <h4>{{info.container.container_no}}</h4>
+
+            <h2>Booking No</h2>
+            <h4>{{info.container.booking_no}}</h4>
+
+            <h2>Port Of Loading</h2>
+            <h4>{{info.container.port_of_loading}}</h4>
+
+            <h2>Port Of Discharge</h2>
+            <h4>{{info.container.port_of_discharge}}</h4>
+
+            <h2>Sailing Date</h2>
+            <h4>{{info.container.sailing_date}}</h4>
+
+            <h2>ETA</h2>
+            <h4>{{info.container.eta}}</h4>
+
+            <h2>Courier</h2>
+            <div><a class="inn_link" [href]="info.container.courier_url">{{info.container.courier_name}}</a></div>
+
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+      <div class="col" *ngIf="containerHistory">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Container History</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <div>
+                <table class="gtable">
+                  <thead>
+                    <th>Shipment Status</th>
+                    <th>Image</th>
+                    <th *ngIf="pms.show_user_column">Added By</th>
+                    <th>Note</th>
+                    <th>Added Date</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of info.history">
+                      <td>{{ item.name}}</td>
+                      <td>
+                        <button mat-button *ngIf="!item.file" disabled><mat-icon>image</mat-icon></button>
+                        <button mat-button (click)="openGallery(item)" *ngIf="item.file"><mat-icon>image</mat-icon></button>
+                      </td>
+                      <td *ngIf="pms.show_user_column">{{ item.username}}</td>
+                      <td>{{ item.note}}</td>
+                      <td>{{ item.date_added}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Assigned Shipment</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ul class="clear_list">
+              <li *ngFor="let item of shipments_list">
+                <div>
+                  <h2>Shipment #{{ item.shipment_id }}</h2>
+                  <h3>Container Type : {{ item.shipment.container_type }}</h3>
+                  <h3>Status : {{ item.shipment.shipment_status }}</h3>
+                  <h3>Shipper Name : {{ item.shipment.shipper_name }}</h3>
+                  <!-- <h3>Shipper Email : {{ item.shipment.shipper_email }}</h3> -->
+                  <div class="cs-plist">
+                    <div *ngFor="let package of item.packages;let i = index">
+
+                      <div class="pck1" *ngIf="package.type == 1">
+                        <div>
+                          <h2>Year</h2>
+                          <h4>{{ package.year }}</h4>
+                        </div>
+
+                        <div>
+                          <h2>Model</h2>
+                          <h4>{{ package.model }}</h4>
+
+
+                        </div>
+
+                        <div>
+                          <h2>Make</h2>
+                          <h4>{{ package.mark }}</h4>
+                        </div>
+
+                        <!-- <div *ngIf="+item.shipment.container_type_id == shared_container_id"> -->
+                        <div>
+                          <h2>Vin</h2>
+                          <h4>{{ package.vin }}</h4>
+                        </div>
+                        <!--
+
+
+                        <div>
+                          <h2>Value</h2>
+                          <h4>{{ package.value }}</h4>
+                        </div> -->
+
+                      </div>
+                      <div class="pck2" *ngIf="package.type == 2">
+                        <div>
+                          <h2>Description</h2>
+                          <h4>{{ package.description }}</h4>
+                        </div>
+
+                        <!-- <div>
+                          <h2>Value</h2>
+                          <h4>{{ package.value }}</h4>
+                        </div> -->
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+	<ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+    <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+  </ng-container>
+</ng-template>

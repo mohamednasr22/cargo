@@ -1,0 +1,11 @@
+.cimg{
+  width: 100%;
+}
+.galleryHolder{
+  ::ng-deep{
+    img{
+      width:100%;
+    }
+  }
+}
+

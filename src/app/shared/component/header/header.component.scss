@@ -1,0 +1,70 @@
+:host{
+    background: #ffffff;
+    z-index: 2;
+    box-shadow: 0px 0px 9px 0px #c6c6c6;
+}
+
+.toggleBtn{
+  margin:0px 0px 0px 10px;
+}
+
+img{
+  width: 50px;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+
+
+.shipment_search_form {
+  mat-icon {
+    vertical-align: middle;
+    margin: 0px 5px 0px 10px;
+  }
+  .tracking-btn {
+    display: inline-block;
+    margin-left: 14px;
+  }
+
+  ::ng-deep{
+    .mat-form-field-infix {
+      padding: 10px 0px;
+    }
+    .mat-form-field {
+      margin-top: 5px;
+    }
+  }
+}
+
+form{
+  display: inline-block;
+}
+
+.right_links {
+  display: inline-block;
+  float: right;
+  padding: 14px;
+}
+.not_lnk{
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.sidemenu_btn{
+  display: none;
+}
+
+@media screen and (max-width:900px){
+  .shipment_search_form{
+    display: none;
+  }
+  .cs-header-menu{
+    display: none;
+  }
+  .sidemenu_btn{
+    display: inline-block;
+    margin: 15px 0px 0px 15px;
+  }
+}

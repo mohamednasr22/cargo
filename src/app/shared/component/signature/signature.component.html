@@ -1,0 +1,41 @@
+
+
+<ng-template #errorTemplate>
+  <h1>We have problem in submission process.</h1>
+</ng-template>
+
+<ng-template #existTemplate>
+  <h1>The Contract is already signed.</h1>
+</ng-template>
+
+
+<ng-template #loadingTemplate>
+  <mat-spinner></mat-spinner>
+</ng-template>
+
+<ng-template #drawTemplate>
+  <h1>Add Your Signature</h1>
+  <canvas #signPad width="360" height="200"></canvas>
+  <div class="btns">
+    <button (click)="save()">Save</button>
+    <button (click)="clear()">Clear</button>
+  </div>
+  <p>your signature will be added to this contract.</p>
+</ng-template>
+
+<ng-template #submitedTemplate>
+  <h1>Thank you</h1>
+  <h2>your signature was added successfully</h2>
+</ng-template>
+
+
+<div class="container gbox">
+  <img [src]="baseurl + 'assets/images/logo.jpeg'" class="llogo"/>
+  <ng-container [ngSwitch]="mode">
+    <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="loadingTemplate"></ng-container>
+    <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="drawTemplate"></ng-container>
+    <ng-container *ngSwitchCase="3" [ngTemplateOutlet]="submitedTemplate"></ng-container>
+    <ng-container *ngSwitchCase="4" [ngTemplateOutlet]="existTemplate"></ng-container>
+    <ng-container *ngSwitchCase="5" [ngTemplateOutlet]="errorTemplate"></ng-container>
+  </ng-container>
+</div>

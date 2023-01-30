@@ -1,0 +1,277 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>add</mat-icon> Create Shipment</span>
+  <div class="cs-right">
+  </div>
+</div>
+
+<form class="cs-box" [formGroup]="dataForm">
+  <div class="col col3-1">
+    <div>
+      <div class="col col2">
+        <div>
+          <mat-card class="cs-card">
+            <mat-card-header>
+              <mat-card-title>
+                Shipper Information
+              </mat-card-title>
+              <span>
+                <mat-slide-toggle [(ngModel)]="newShipper" name="enableAddShipper" (change)="toggleNewShipper($event)">Add New</mat-slide-toggle>
+              </span>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <mat-label>Shipper Name</mat-label>
+                <ng-container *ngIf="newShipper">
+                  <input type="text" matInput value="">
+                </ng-container>
+                <ng-container *ngIf="!newShipper">
+                  <input type="text" matInput [formControl]="shippers" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectionChanged($event)">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      {{option.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </ng-container>
+
+              </mat-form-field>
+
+
+              <mat-form-field>
+                <mat-label>Type</mat-label>
+                <mat-select [value]="selectedShipper.type">
+                  <mat-option value="1">Company</mat-option>
+                  <mat-option value="2">individual</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input type="text" matInput [value]="selectedShipper.name">
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Address</mat-label>
+                <input type="text" matInput [value]="selectedShipper.address">
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input type="text" matInput [value]="selectedShipper.email">
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>EIN|Passport No</mat-label>
+                <input type="text" matInput [value]="selectedShipper.einno">
+              </mat-form-field>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div>
+          <mat-card class="cs-card">
+            <mat-card-header>
+              <mat-card-title>Receiver Information</mat-card-title>
+              <span>
+                <mat-slide-toggle [(ngModel)]="newReceiver" name="enableAddReceiver" (change)="toggleNewReceiver($event)">Add New</mat-slide-toggle>
+              </span>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <mat-label>Receiver Name</mat-label>
+                <ng-container *ngIf="newReceiver">
+                  <input type="text" matInput value="">
+                </ng-container>
+                <ng-container *ngIf="!newReceiver">
+                  <input type="text" matInput [formControl]="receivers" [matAutocomplete]="auto2">
+                  <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelection2Changed($event)">
+                    <mat-option *ngFor="let option of filteredOptions2 | async" [value]="option">
+                      {{option.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </ng-container>
+
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input type="text" matInput [value]="selectedReceiver.phone">
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Address</mat-label>
+                <input type="text" matInput [value]="selectedReceiver.address">
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input type="text" matInput [value]="selectedReceiver.email">
+              </mat-form-field>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <!-- <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Multiple Receiver</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="col">
+              <button mat-raised-button color="warn" (click)="openReceiverDialog()">Add Receiver</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div> -->
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Shipment Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <div class="cs-plist">
+                <div *ngFor="let package of packages">
+                  <ng-container *ngIf="package == '0'">
+                    <mat-form-field>
+                      <mat-label>Year</mat-label>
+                      <input type="text" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Model</mat-label>
+                      <input type="text" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Make</mat-label>
+                      <input type="text" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Vin</mat-label>
+                      <input type="text" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Value</mat-label>
+                      <input type="text" matInput>
+                    </mat-form-field>
+
+                    <div class="fipt">
+                      <label for="f1">File</label>
+                      <input id="f1" type="file"/>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="package == '1'">
+                    <mat-form-field class="long_txt">
+                      <mat-label>Description</mat-label>
+                      <input type="text" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Value</mat-label>
+                      <input type="text" matInput>
+                    </mat-form-field>
+
+                    <div class="fipt">
+                      <label for="f1">File</label>
+                      <input id="f1" type="file"/>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="cs-button-holder">
+                <button mat-raised-button color="warn" [matMenuTriggerFor]="menu">Add New</button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="addPackage('0');">Vehicles</button>
+                  <button mat-menu-item (click)="addPackage('1');">Other Commodities</button>
+                </mat-menu>
+              </div>
+
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Other Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput [matDatepicker] = "pickpicker" placeholder = "Date">
+              <mat-datepicker-toggle matSuffix [for] = "pickpicker"></mat-datepicker-toggle>
+              <mat-datepicker #pickpicker></mat-datepicker>
+           </mat-form-field>
+            <mat-form-field>
+              <mat-label>Container Type</mat-label>
+              <mat-select>
+                <mat-option value="0">Private</mat-option>
+                <mat-option value="1">Shared</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <span class="frtoggle">
+                <mat-slide-toggle [(ngModel)]="newDestination" name="enableNewDestination">Add New</mat-slide-toggle>
+              </span>
+              <mat-label>Destination</mat-label>
+              <ng-container *ngIf="newDestination">
+                <input type="text" matInput [formControl]="destinations">
+              </ng-container>
+              <ng-container *ngIf="!newDestination">
+                <input type="text" matInput [formControl]="destinations" [matAutocomplete]="auto3">
+                <mat-autocomplete #auto3="matAutocomplete" [displayWith]="display3Fn">
+                  <mat-option *ngFor="let option of filteredOptions3 | async" [value]="option">
+                    {{option.name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </ng-container>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>History</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+
+            <mat-form-field>
+              <mat-label>Status</mat-label>
+              <mat-select>
+                <mat-option value="0">Pending</mat-option>
+                <mat-option value="1">Cancelled</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+
+            <mat-form-field>
+              <mat-label>Note</mat-label>
+              <textarea matInput></textarea>
+            </mat-form-field>
+
+            <div class="fupload">
+              <label for="ifile">Attach File</label>
+              <input type="file" id="ifile">
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+        <div class="form-add">
+          <button mat-raised-button color="warn">Submit</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</form>
+

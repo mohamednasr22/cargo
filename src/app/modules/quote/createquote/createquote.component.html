@@ -1,0 +1,68 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>format_quote</mat-icon> Update Quotes</span>
+  <div class="cs-right">
+    <a [routerLink]="'/admin/quote/list'" mat-flat-button>
+      <mat-icon mat-list-icon>keyboard_arrow_left</mat-icon>  Back
+    </a>
+  </div>
+</div>
+<div class="cs-box">
+  <div>
+    <div class="cs_aux_field">
+        <label>View Quotes</label>
+        <div class="cs_aux_date">
+          <dp-date-picker  theme="dp-material" mode='month' #datePicker [formControl]="dateInput"></dp-date-picker>
+        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Select Destination</mat-label>
+          <mat-select [formControl]="destinationInput">
+            <mat-option *ngFor="let item of destinations_list" [value]="item.id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="cs_inline_buttons">
+          <button mat-raised-button color="warn" (click)="viewQuote()" *ngIf="userParameter">VIEW</button>
+          <button mat-raised-button color="warn" (click)="saveDuplicate()" *ngIf="userParameter">Dublicate</button>
+          <button mat-raised-button color="warn" (click)="saveQuote()">Save</button>
+        </div>
+    </div>
+    <div class="cs_aux_user_field">
+      <label>Assigned User</label>
+      <mat-form-field appearance="fill">
+        <input type="text" matInput [formControl]="userNameCtrl" [matAutocomplete]="auto_user">
+        <mat-autocomplete #auto_user="matAutocomplete" [displayWith]="displayUsers" (optionSelected)="onUserSelectionChanged($event)">
+          <mat-option *ngFor="let option of filterUsers | async" [value]="option">
+            {{option.firstname}} {{option.lastname}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+  </div>
+  </div>
+  <form class="cs-mat-table">
+    <table>
+      <thead>
+        <tr>
+          <th>USA</th><th>2 Auto</th><th>3 Auto</th><th>4 Auto</th><th>Regular Auto</th><th>Large Auto</th><th>Oversize Auto</th><th>40 HC FULL</th><th>45 HC FULL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ldata;let i = index;">
+          <td>{{ item.name }}</td>
+          <td *ngFor="let idata of item.data;let j = index;">
+            <span class="dr">
+              <b>40 HC</b><b>45 HC</b>
+            </span>
+            <span class="dr n">
+              <b><input type="number" class="csinput" [value]="idata.h40" placeholder="0" (keyup)="onFirstChange(i,j,'h40',$event)" (change)="onFirstChange(i,j,'h40',$event)"></b>
+              <b><input type="number" class="csinput" [value]="idata.h45" placeholder="0" (keyup)="onFirstChange(i,j,'h45',$event)" (change)="onFirstChange(i,j,'h45',$event)"></b>
+            </span>
+          </td>
+          <td><input type="number" class="csinput" [value]="item.h40" placeholder="0" (keyup)="onSecondChange(i,'h40',$event)"></td>
+          <td><input type="number" class="csinput" [value]="item.h45" placeholder="0" (keyup)="onSecondChange(i,'h45',$event)"></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>

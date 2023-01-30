@@ -1,0 +1,536 @@
+<ng-template #topLogo>
+  <div class="top_holder">
+    <div class="top_logo">
+      <img [src]="baseurl + 'assets/images/logo.jpeg'"/>
+      <div>
+        <span>HM CARGO LLC</span>
+        <span>CONTAINER/RORO/LCL/AIR CARGO</span>
+        <span>FMC-OTI NO: 026068NF</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #pageFooter>
+  <div class="page_footer">
+    <span>6250 Westpark Dr. Suite 323</span> • <span>HOUSTON IX 77057</span> • <span>TEL:713 637 4363</span> • <span>FAX 713 637 4276</span>
+  </div>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <div class="container gbox">
+    <img [src]="baseurl + 'assets/images/logo.jpeg'" class="llogo"/>
+    <h1>We have problem in submission process.</h1>
+  </div>
+</ng-template>
+
+<ng-template #existTemplate>
+  <div class="container gbox">
+    <img [src]="baseurl + 'assets/images/logo.jpeg'" class="llogo"/>
+    <h1>You already added your signature</h1>
+  </div>
+</ng-template>
+
+
+<ng-template #loadingTemplate>
+  <div class="container gbox">
+    <img [src]="baseurl + 'assets/images/logo.jpeg'" class="llogo"/>
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #drawTemplate>
+  <div class="pageContainer" id="content">
+
+    <form [formGroup]="dataForm">
+        <div class="page" formGroupName="page1">
+          <ng-container [ngTemplateOutlet]="topLogo"></ng-container>
+          <span class="float_right"><b>ORDER FORM</b></span>
+          <p>
+            Re: Exportation of cargo from United States
+          </p>
+          <p>
+            I here authorize HM CARGO LLC & their employees to act as my forwarding agent for the export control and customs purposes. To prepare, sign, declare or swear to any Shipper's Export Declaration required by law or regulations in connection with the exportation of any commodity shipped by me. To do all the things necessary to ensure compliance with all the requirements pursuant to section 192 of the U.S. Customs Regulations.
+          </p>
+          <div class="form_holder">
+              <div>
+                <span>Company Name</span> <input type="text" readonly formControlName="inpt1"/>
+              </div>
+              <div class="div_div">
+                <div>
+                  <span>First Name</span> <input type="text" readonly formControlName="inpt2"/>
+                </div>
+                <div>
+                  <span>Last Name</span> <input type="text" readonly formControlName="inpt3"/>
+                </div>
+              </div>
+              <div>
+                <span>Street Address</span> <input type="text" readonly formControlName="inpt4"/>
+              </div>
+              <div>
+                <span>City, Sate ,Zip Code, Country</span> <input type="text" readonly formControlName="inpt5"/>
+              </div>
+              <div class="div_div">
+                <div>
+                  <span>Telephone</span> <input type="text" readonly formControlName="inpt6"/>
+                </div>
+                <div>
+                  <span>E-mail</span> <input type="text" readonly formControlName="inpt7"/>
+                </div>
+              </div>
+              <div>
+                TAX ID (EIN) or Foreign Passport <input type="text" readonly formControlName="inpt8"/> <span>(Social Security, Driver license and US Passports are NOT acceptable)</span>
+              </div>
+          </div>
+          <div class="form_holder">
+            <div class="div_div">
+              <div>
+                Signature <ng-container *ngIf="!signimg && shippersignature == ''"><button (click)="viewSignatureBox()">Add your signature</button></ng-container><ng-container *ngIf="signimg"><img  [src]="signimg" class="signimg" /></ng-container><ng-container *ngIf="shippersignature != ''"><img  [src]="shippersignature" class="signimg" /></ng-container>
+              </div>
+              <div>
+                <span>Date (mm/dd/yyyy)</span> <input type="text" readonly formControlName="inpt9"/>
+              </div>
+            </div>
+          </div>
+          <div>
+            <b>By signing this form, I confirm that all the information is accurate to best of my knowledge and I have read and agreed with terms and conditions. Also by filling out this form you certify that you are the owner of the cargo or licensed freight forwarder or NVOCC</b>
+          </div>
+          <div class="page_box">
+            <div class="page_box_title">
+              <b>CONSIGNEE INFORMATION</b> <span>(Must bo full overseas address)</span>
+            </div>
+            <div class="form_holder">
+              <div>
+                <span>Company Name</span> <input type="text" readonly formControlName="inpt10"/>
+              </div>
+              <div class="div_div">
+                <div>
+                  <span>First Name</span> <input type="text" readonly formControlName="inpt11"/>
+                </div>
+                <div>
+                  <span>Last Name</span> <input type="text" readonly formControlName="inpt12"/>
+                </div>
+              </div>
+              <div>
+                <span>Street Address (no PO Box)</span> <input type="text" readonly formControlName="inpt13"/>
+              </div>
+              <div>
+                <span>City, Postal Code, Country</span> <input type="text" readonly formControlName="inpt14"/>
+              </div>
+              <div class="div_div">
+                <div>
+                  <span>Local Telephone</span> <input type="text" readonly formControlName="inpt15"/>
+                </div>
+                <div>
+                  <span>E-mail</span> <input type="text" readonly formControlName="inpt16"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page_box">
+            <div class="page_box_title">
+              <b>ORIGIN & DESTINATION</b>
+            </div>
+            <div class="form_holder">
+              <div class="div_div">
+                <div>
+                  <span>Loading Port</span> <input type="text" readonly formControlName="inpt17"/>
+                </div>
+                <div>
+                  <span>Destination Port</span> <input type="text" readonly formControlName="inpt18"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page_box">
+            <div class="page_box_title">
+              <b>COMMODITY INFORMATION</b>
+            </div>
+            <div class="page_table">
+              <div>
+                Vehicle Description
+              </div>
+              <div>
+                <table>
+                  <tr>
+                    <td>VIN</td>
+                    <td>YEAR</td>
+                    <td>MAKE</td>
+                    <td>MODEL</td>
+                    <td>VALUE</td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" readonly formControlName="inpt19"/></td>
+                    <td><input type="text" readonly formControlName="inpt20"/></td>
+                    <td><input type="text" readonly formControlName="inpt21"/></td>
+                    <td><input type="text" readonly formControlName="inpt22"/></td>
+                    <td><input type="text" readonly formControlName="inpt23"/></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" readonly formControlName="inpt24"/></td>
+                    <td><input type="text" readonly formControlName="inpt25"/></td>
+                    <td><input type="text" readonly formControlName="inpt26"/></td>
+                    <td><input type="text" readonly formControlName="inpt27"/></td>
+                    <td><input type="text" readonly formControlName="inpt28"/></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" readonly formControlName="inpt29"/></td>
+                    <td><input type="text" readonly formControlName="inpt30"/></td>
+                    <td><input type="text" readonly formControlName="inpt31"/></td>
+                    <td><input type="text" readonly formControlName="inpt32"/></td>
+                    <td><input type="text" readonly formControlName="inpt33"/></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" readonly formControlName="inpt34"/></td>
+                    <td><input type="text" readonly formControlName="inpt35"/></td>
+                    <td><input type="text" readonly formControlName="inpt36"/></td>
+                    <td><input type="text" readonly formControlName="inpt37"/></td>
+                    <td><input type="text" readonly formControlName="inpt38"/></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="full_input">
+              <div>
+                Other Items(# of Pieces Weight, Value)
+              </div>
+              <div>
+                <input type="text" readonly formControlName="inpt39"/>
+              </div>
+            </div>
+          </div>
+          <div class="page_box">
+            <div class="page_box_title">
+              <b>ADDITIONAL INFORMATION</b> <span>(Optional)</span>
+            </div>
+            <div class="form_holder">
+              <div class="div_div full">
+                <div>Cargo Release <span><input type="checkbox" onclick="return false;" formControlName="inpt40"/> Telex</span> <span><input type="checkbox" onclick="return false;" formControlName="inpt41"/> Original BL</span></div>
+                <div><span>Equipment Type(20ft,40ft,etc.)</span> <input type="text" readonly formControlName="inpt42"/></div>
+              </div>
+              <div class="div_div full">
+                <div><span>Vehicle Insurance Amount</span> <input type="text" readonly formControlName="inpt43"/></div>
+                <div><span>Loading option(1/3,1/4,etc.)</span> <input type="text" readonly formControlName="inpt44"/></div>
+              </div>
+              <div class="div_div full">
+                <div><span>Preferred Shipping Line</span> <input type="text" readonly formControlName="inpt45"/></div>
+                <div><span>Quote</span> <input type="text" readonly formControlName="inpt46"/></div>
+              </div>
+              <div class="div_div full">
+                <div>Pick Up <span><input type="checkbox" onclick="return false;" formControlName="inpt47"/> Yes</span> <span><input type="checkbox" onclick="return false;" formControlName="inpt48"/> No</span></div>
+                <div>Documents Return <input type="text" readonly formControlName="inpt49"/></div>
+              </div>
+            </div>
+          </div>
+          <div class="page_box">
+            <div class="div_3_7">
+              <div>
+                <div><b>Chargers</b> (For office use only)</div>
+                <div>Freight $<input type="text" readonly formControlName="inpt50"/></div>
+                <div>Insurance $<input type="text" readonly formControlName="inpt51"/></div>
+                <div>Trucking $<input type="text" readonly formControlName="inpt52"/></div>
+                <div>Mail $<input type="text" readonly formControlName="inpt53"/></div>
+                <div>Total $<input type="text" readonly formControlName="inpt54"/></div>
+              </div>
+              <div>
+                Unless otherwise noted, all ocean freight quotations are: valid for 30 days from the date of original quotation, subject to equipment availability, subject to any and all tariff additions, valid at time initial shipment is received. Inland freight quotations are: subject to third party increases valid at time initial shipment is received, subject to any fuel surcharges valid at time initial shipment is received, subject to weight limitations and weight distribution requirements in accordance with the local and national rules and regulations of the country (ies) of transit, subject to availability of inland carrier at time of booking. Loading, lashing, securing, blocking and bracing of cargo is for shipper’s account. Carrier reserves the right to stow cargo in the best interest of the Vessel and in compliance with local, national and international rules, regulations and conventions. On deck shipments at shipper’s risk. Dangerous cargo, as defined by 49 CFR or the IMDG Code, is subject to the line’s approval at time of booking. Kindly note all vessel dates are subject to changes. Equipment is subject to availability.HM Cargo LLC will make its best effort to book shipment with customer’s preferred shipping line at freight rates quoted herein, but selection of shipping line may be subject to change at the discretion of HM Cargo LLC.
+              </div>
+            </div>
+          </div>
+          <ng-container [ngTemplateOutlet]="pageFooter"></ng-container>
+        </div>
+        <div class="page" formGroupName="page2">
+          <div class="">
+            <ng-container [ngTemplateOutlet]="topLogo"></ng-container>
+            <div class="page_box_title">
+              <h2>Negotiated Rate Arrangement</h2>
+            </div>
+
+            <div class="form_holder">
+              <div>Date <input type="text" readonly formControlName="inpt55"/></div>
+              <div>Quotation Ref.<input type="text" readonly formControlName="inpt56"/></div>
+              <div>Quotation <input type="text" readonly formControlName="inpt57"/></div>
+              <div class="div_div">
+                <div>Quotation validity from <input type="text" readonly formControlName="inpt58"/></div>
+                <div>to <input type="text" readonly formControlName="inpt59"/></div>
+              </div>
+              <div>Port of Loading <input type="text" readonly formControlName="inpt60"/></div>
+              <div>Port of Discharge <input type="text" readonly formControlName="inpt61"/></div>
+              <div>Size & Quantity <input type="text" readonly formControlName="inpt62"/></div>
+              <div>Commodity <input type="text" readonly formControlName="inpt63"/></div>
+              <div>Carrier Name <input type="text" readonly formControlName="inpt64"/></div>
+              <div>Shipper Name(Company/Name) <input type="text" readonly formControlName="inpt65"/></div>
+            </div>
+          </div>
+          <div>
+            <h2>Rules and terms of condition:</h2>
+            <ol class="page_list">
+              <li>Unless otherwise noted, all ocean freight quotations are: valid for 30 days from the date of original quotation, subject to equipment availability, subject to any and all tariff additions, valid at time initial shipment is received. Inland freight quotations are: subject to third party increases valid at time initial shipment is received, subject to any fuel surcharges valid at time initial shipment is received, subject to weight limitations and weight distribution requirements in accordance with the local and national rules and regulations of the country (ies) of transit, subject to availability of inland carrier at time of booking. Loading, lashing, securing, blocking and bracing of cargo is for shipper’s account. Carrier reserves the right to stow cargo in the best interest of the Vessel and in compliance with local, national and international rules, regulations and conventions. On deck shipments at shipper’s risk. Dangerous cargo, as defined by 49 CFR or the IMDG Code, is subject to the line’s approval at time of booking. Kindly note all vessel dates are subject to changes. Equipment is subject to availability. See HM CARGO ORDER FORM for shipment details to which such rate will apply. Service provided to this NRA is subject to Carrier’s governing rules tariff, which is accessible at www.doiusa.com in compliance with FMC Regulations as provided in 46 CFR 532.7</li>
+
+              <li>CARGO INSURANCE: We advise all our customers to put insurance on their shipments either container RORO air cargo LCL as there is no insurance on shipment.</li>
+
+              <li>Customs hold and inspection: HM CARGO LLC will not be responsible for any delay or Costs incurred due to custom investigation or hold. See bill of Lading Terms 1-34 in Rule 8 of carriers governing rules tariff.</li>
+
+              <li>RORO: Vehicle shipments should be empty and operational.</li>
+              <li>PAYMENT: We advice all customers to pay on time. Please allow 3-7 business days before we can process your payment and send you your release. HM CARGO LLC is not responsible for any demurrage or detention occurs at destination due to late payment.</li>
+
+              <li>ETA and ETD: All dates of sailing and arriving are estimated and HM CARGO LLC will not be responsible for any delay. See bill of Lading Terms 1-34 in Rule 8 of carriers governing rules tariff.</li>
+
+              <li>Packing List: Customer is responsible for providing HM Cargo LLC a proper packing list of goods to be loaded at customer location. HM Cargo LLC will not be responsible for any fines, fees and penalties due to failure to provide HM Cargo LLC a proper packing list of goods. Customer will be responsible for Charges incurred due to incorrect packing list.</li>
+
+              <li>Declaring Values: HM Cargo LLC requires that the shipper provides values for goods being shipped for Documentary/ Customs purposes. Customer should do their best to provide as accurate information as possible. Customer will be responsible for Charges incurred due to incorrect values or holds caused.</li>
+
+              <li>See HM CARGO ORDER FORM for shipment details to which such rate will apply.</li>
+
+              <li>See more details for more rules and terms of condition on our website www.hmcargollc.com.</li>
+
+              <li>Customer and HM Cargo LLC agree that the customer’s identity, the rates, charges, terms and conditions offered and/or agreed in an NRA shall be kept confidential from any other shipper or carrier or party not participating in the transportation provided under this NRA. Any breach of this confidentiality agreement may give rise to a cause of action for actual damages proven to result from such breach of confidentiality.</li>
+            </ol>
+          </div>
+          <div class="form_holder">
+            <div>Shipper Name (Company/Name) <input type="text" readonly formControlName="inpt66"/></div>
+            <div>Signature <ng-container *ngIf="!signimg && shippersignature == ''"><button (click)="viewSignatureBox()">Add your signature</button></ng-container><ng-container *ngIf="signimg"><img  [src]="signimg" class="signimg" /></ng-container><ng-container *ngIf="shippersignature != ''"><img  [src]="shippersignature" class="signimg" /></ng-container></div>
+            <div>Date <input type="text" readonly formControlName="inpt67"/></div>
+            <br/>
+            <br/>
+            <div>HM CARGO LLC <input type="text" readonly formControlName="inpt68"/></div>
+            <div>Signature <ng-container *ngIf="managersignature != ''"><img  [src]="managersignature" class="signimg" /></ng-container></div>
+            <div>Date <input type="text" readonly formControlName="inpt69"/></div>
+          </div>
+          <ng-container [ngTemplateOutlet]="pageFooter"></ng-container>
+        </div>
+        <div class="page" formGroupName="page3">
+          <div class="">
+            <ng-container [ngTemplateOutlet]="topLogo"></ng-container>
+            <div class="page_box_title">
+              <h2>WRITTEN AUTHORIZATION TO PREPARE OR TRANSMIT</h2>
+              <h2>SHIPPER’S EXPORT INFORMATION</h2>
+            </div>
+
+            <div>
+              <div class="form_holder">
+                <div>I, <input type="text" readonly formControlName="inpt70"/> Authorize</div>
+              </div>
+              <div>Exporter (U.S. Principal Party In Interest)</div>
+              <div>
+              HM Cargo LLC to act as forwarding agent for export control and customs purposes and to sign any shippers export declaration (SED), or transmit such export info electronically, which may be required by law or regulation in connection with the exportation or transportation of any merchandise on behalf of said U.S. principal party in interest. The U.S principal party in interest certifies that necessary and proper documentation to accurately complete the SED or transmit the information electronically is and will be provided to HM Cargo LLC the us principal party in interest further understands that civil and criminal penalties may be imposed for making false or fraudulent statements or for the violation of any united states laws or regulation on exportation and agrees to be bound by all statements of said based upon information or documentation provided by exporter to HM Cargo LLC.
+              </div>
+              <div>
+              This Authorization is to remain in full force effect until revocation in writing is duly given by the U.S. Principal Party in interest and received by HM Cargo LLC
+              </div>
+              <div class="form_holder">
+                <div>Company/Individual name <input type="text" readonly formControlName="inpt71"/></div>
+                <div>Address <input type="text" readonly formControlName="inpt72"/></div>
+                <div>Tel <input type="text" readonly formControlName="inpt73"/></div>
+                <div>EIN# Or Passport # <input type="text" readonly formControlName="inpt74"/></div>
+                <div>Date <input type="text" readonly formControlName="inpt75"/></div>
+                <div>Signature <ng-container *ngIf="!signimg && shippersignature == ''"><button (click)="viewSignatureBox()">Add your signature</button></ng-container><ng-container *ngIf="shippersignature != ''"><img  [src]="shippersignature" class="signimg" /></ng-container><ng-container *ngIf="signimg"><img  [src]="signimg" class="signimg" /></ng-container></div>
+              </div>
+            </div>
+            <ng-container [ngTemplateOutlet]="pageFooter"></ng-container>
+          </div>
+        </div>
+        <div class="page" formGroupName="page4">
+          <div class="">
+            <ng-container [ngTemplateOutlet]="topLogo"></ng-container>
+            <div class="page_box_title">
+              <h2>END USER STATEMENT</h2>
+            </div>
+            <div>
+              The following information is mandatory and will be used by HM Cargo LLC to determine the appropriate export authorization. The export authorization is in compliance with the U.S. State Department's International Traffic in Arms Regulations. (ITAR 22 CFR 120-130) or U.S. Department of Commerce's Export Administration Regulation (EAR), 15 CFR 768-799.
+            </div>
+            <div>
+              Please complete the following information as completely and as accurately as possible:
+            </div>
+            <div>
+              <h3>END USE:</h3>
+              <div>
+                What is the specific purpose for which the material is required? (Include specific Program/End Item):
+                <textarea></textarea>
+              </div>
+            </div>
+            <div>
+              <h3>FOREIGN END USER:</h3>
+              <div>
+                The entity from a non U.S. location that receives and uses the exported or re-exported item, even after being incorporated into a higher level assembly. The end user may be the purchaser or ultimate consignee however; the end-user is not a forwarding agent or intermediary.
+              </div>
+            </div>
+
+            <div>
+              <div>Fill out the complete information for the foreign end user (full name and address, no P.O. Box):</div>
+              <div class="form_holder">
+                <div>Name <input type="text" readonly formControlName="inpt76"/></div>
+                <div>Address <input type="text" readonly formControlName="inpt77"/></div>
+                <div>City/Postal Code <input type="text" readonly formControlName="inpt78"/></div>
+                <div>Country <input type="text" readonly formControlName="inpt79"/></div>
+              </div>
+
+              <div>
+                I, the undersigned, hereby certify that all of the representations made herein are true and correct, and that the above-mentioned commodity(s) are for the end-use and end-user, to the best of my knowledge and belief.
+              </div>
+              <div class="form_holder">
+                <div>Signature <ng-container *ngIf="!signimg && shippersignature == ''"><button (click)="viewSignatureBox()">Add your signature</button></ng-container><ng-container *ngIf="signimg"><img  [src]="signimg" class="signimg" /></ng-container><ng-container *ngIf="shippersignature != ''"><img  [src]="shippersignature" class="signimg" /></ng-container></div>
+                <div>Name <input type="text" readonly formControlName="inpt80"/></div>
+                <div>Date <input type="text" readonly formControlName="inpt81"/></div>
+                <div>Title <input type="text" readonly formControlName="inpt82"/></div>
+                <div>Company <input type="text" readonly formControlName="inpt83"/></div>
+              </div>
+            </div>
+            <ng-container [ngTemplateOutlet]="pageFooter"></ng-container>
+          </div>
+        </div>
+        <div class="page" formGroupName="page5">
+          <div class="">
+            <ng-container [ngTemplateOutlet]="topLogo"></ng-container>
+            <div class="page_box_title">
+              <h2>HM CARGO LLC ROLE AND CARRIER'S LIABILITY</h2>
+            </div>
+            <div>
+              Thank you for making HM CARGO LLC your top choice for your shipping needs. We appreciate your business and strive to provide premium quality service at all times. Please note, however, that while every effort is made to ensure safe delivery of your goods, sometimes loss and/damage may occur.
+            </div>
+            <div>
+              By law, HM CARGO LLC arranges for the transportation of your goods, however it is the carrier who bears the responsibility for any loss/damage to your freight. The carrier’s liability for freight moving over the ocean is governed by the Carriage of Goods by Sea Act (COGSA). Under the terms of COGSA, the most you could recover from shipping lines in the event they are proven negligent is $500 for each Customary Freight Unit (CFU). Measurement of the CFU is widely defined, and can vary from one container to one pallet.
+            </div>
+            <div>
+              COGSA is centered on the liability of the carrier. The concept of the carrier liability assumes that the carrier is not responsible for paying claims if they did not cause or contribute to the loss. In the event that HM CARGO LLC acts as an NVOCC and assumes carrier liability, recovery in the event of a claim is still limited by COGSA in the bill of lading terms and conditions.
+            </div>
+            <div>
+              In order to better define carrier liability, Hague-Visby rules were created to define 17 circumstances under which the carrier cannot be held liable. If a loss is caused by any one of the following defenses; the ocean carrier will not pay for any part of the loss:
+            </div>
+            <ul>
+              <li> Any neglect default of error of the carrier in navigation or of management of the ship</li>
+              <li> Perils or dangers of the sea (storms etc.)</li>
+              <li> Inherent defect, quality or vice of the goods</li>
+              <li> Fire</li>
+              <li> Quarantine restrictions</li>
+              <li> Acts or omissions of the shipper</li>
+              <li> Strikes, lockouts or labor shortage</li>
+              <li> Riots or civil commotions</li>
+              <li> Act of God</li>
+              <li> Act of war or public enemies</li>
+              <li> Insufficient packing</li>
+              <li> Arrest, restraint or seizure</li>
+              <li> Defects not discoverable by due diligence</li>
+              <li> Attempting to save life or property at sea</li>
+            </ul>
+            <div>
+              Please note: This summary is provided only for informational purposes. It does not grant or extend coverage. All coverage is governed by the terms and conditions set forth in the policy (available upon request). HM CARGO LLC is not the insurance company and therefore purchases insurance for its clients from Navigators.
+            </div>
+            <div>
+              <h3>Insurance Conditions are specified as follows:</h3>
+              <div>
+                Warrant professionally packed and containerized. If any of these warranties are being breached, coverage is reverted to F.P.A. only. Warrant precondition survey with pictures taken of all four sides of the vehicle. If warranty is breached, coverage excludes marring, denting, chipping, scratching, electrical and/or mechanical derangement, rust, oxidation, discoloration and corrosion. No coverage while under own power. Coverage for manufacturer permanently installed items only. Each loss or occurrence is subject to a deductible.
+              </div>
+            </div>
+            <div>
+              <h3>Please tell us how you would like to proceed:</h3>
+              <div><input type="checkbox" onclick="return false;" formControlName="inpt84"/> I wish to insure this shipment. Please contact us to discuss our options.</div>
+              <div><input type="checkbox" onclick="return false;" formControlName="inpt85"/> I do not wish to insure this shipment and I understand that my recovery will be limited in the event of loss.</div>
+            </div>
+            <div>
+              <div class="form_holder">
+                <div class="div_div full">
+                  <div>Signature, Title/Date <ng-container *ngIf="!signimg && shippersignature == ''"><button (click)="viewSignatureBox()">Add your signature</button></ng-container><ng-container *ngIf="signimg"><img  [src]="signimg" class="signimg" /></ng-container><ng-container *ngIf="shippersignature != ''"><img  [src]="shippersignature" class="signimg" /></ng-container><input type="text" readonly formControlName="inpt86"/></div>
+                  <div>Full name (Print) <input type="text" readonly formControlName="inpt87"/></div>
+                </div>
+              </div>
+              <div>
+                I hereby affirm that I am the owner of the cargo that is being shipped or I have been granted a power of attorney to act on the owner’s behalf.
+              </div>
+              <div>
+                I understand and agree that is my responsibility, as a shipper; to know the import laws and regulation of the country of final destination. I confirm that the container will be picked up by the receiver within 30 calendar days of the arrival. If the cargo is not picked up on time, I waive all right to the cargo and agree for it to be auctioned out in order to cover demurrage charges and custom fines.
+              </div>
+              <div class="form_holder">
+                <div class="div_div full">
+                  <div>Signature, Title/Date <ng-container *ngIf="!signimg && shippersignature == ''"><button (click)="viewSignatureBox()">Add your signature</button></ng-container><ng-container *ngIf="signimg"><img  [src]="signimg" class="signimg" /></ng-container><ng-container *ngIf="shippersignature != ''"><img  [src]="shippersignature" class="signimg" /></ng-container><input type="text" readonly formControlName="inpt88"/></div>
+                  <div>Full name (Print) <input type="text" readonly formControlName="inpt89"/></div>
+                </div>
+              </div>
+            </div>
+            <ng-container [ngTemplateOutlet]="pageFooter"></ng-container>
+          </div>
+        </div>
+        <div class="page" formGroupName="page6">
+          <div>
+            <ng-container [ngTemplateOutlet]="topLogo"></ng-container>
+            <div class="page_box_title">
+              <h2>Important Notes</h2>
+            </div>
+            <ul class="page_list v2">
+              <li>
+                <div>Concerning the vehicle:</div>
+                <div>Fuel must be drained from the car to contain less than one quarter of the tank i.e. 5litres which is equivalent to 1.320 Gallons</div>
+              </li>
+              <li>
+                <div>Customs Inspection:</div>
+                <div>If a shipment is selected by the U.S. Customs for examination, whether it is an import or export; the shipper of the goods will be responsible for all the fees associated with it. HM CARGO LLC is not responsible for any charges or complications that may arise as a result of dealing with the U.S. Customs.</div>
+              </li>
+              <li>
+                <div>Port of destination charges:</div>
+                <div>Please note that the ocean freight charge paid in the United States for shipping your cargo does not cover the local destination port charges. Such destination port charges including handling charges, import customs clearing charges and agency fees have to be paid to an agency at the port of destination. Please consult agencies in your country of destination about these charges before you ship your cargo.</div>
+              </li>
+              <li>
+                <div>Documentation amendment fees:</div>
+                <div>After a bill of lading is submitted to the ocean carrier, every change requested by the shipper will incur documentation amendment charges from $50.00 to $300.00, depending on which ocean carrier is used. I hereby affirm that I have read and agreed with the notes above:</div>
+              </li>
+            </ul>
+            <div class="form_holder">
+              <div>Customer’s Name <input type="text" readonly formControlName="inpt90"/></div>
+              <div>Customer’s Signature <ng-container *ngIf="!signimg && shippersignature == ''"><button (click)="viewSignatureBox()">Add your signature</button></ng-container><ng-container *ngIf="signimg"><img  [src]="signimg" class="signimg" /></ng-container><ng-container *ngIf="shippersignature != ''"><img  [src]="shippersignature" class="signimg" /></ng-container></div>
+              <div>Date <input type="text" readonly formControlName="inpt91"/></div>
+            </div>
+            <ng-container [ngTemplateOutlet]="pageFooter"></ng-container>
+          </div>
+        </div>
+
+    </form>
+
+  </div>
+  <div class="container_overlay" [ngClass]="{'active' : viewSignBox}">
+    <div class="container gbox">
+      <span class="close_it" (click)="closeSignatureBox()"></span>
+      <h1>Add Your Signature</h1>
+      <div>
+        <canvas #signPad width="360" height="200"></canvas>
+        <div class="btns">
+          <button (click)="save()">Save</button>
+          <button (click)="clear()">Clear</button>
+        </div>
+        <p>your signature will be added to this contract.</p>
+        <!-- <p><span class="dmbtn" (click)="openGallery(contract)">View Contract</span></p> -->
+      </div>
+    </div>
+  </div>
+  <div class="btn_options" *ngIf="signimg">
+    <button (click)="submit()">Submit</button>
+    <button (click)="reSign()">Re-Sign</button>
+  </div>
+
+
+  <div class="btn_options" *ngIf="managersignature != ''">
+    <button (click)="print()">Print</button>
+    <button (click)="savePDF()">Download</button>
+  </div>
+
+</ng-template>
+
+<ng-template #submitedTemplate>
+  <div class="container gbox">
+    <img [src]="baseurl + 'assets/images/logo.jpeg'" class="llogo"/>
+    <h1>Thank you</h1>
+    <h2>your signature was added successfully</h2>
+  </div>
+</ng-template>
+<ng-container [ngSwitch]="mode">
+  <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="loadingTemplate"></ng-container>
+  <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="drawTemplate"></ng-container>
+  <ng-container *ngSwitchCase="3" [ngTemplateOutlet]="submitedTemplate"></ng-container>
+  <ng-container *ngSwitchCase="4" [ngTemplateOutlet]="existTemplate"></ng-container>
+  <ng-container *ngSwitchCase="5" [ngTemplateOutlet]="errorTemplate"></ng-container>
+  <ng-container *ngSwitchCase="6" [ngTemplateOutlet]="drawTemplate"></ng-container>
+</ng-container>
+
+<ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+	<ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+    <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+  </ng-container>
+</ng-template>

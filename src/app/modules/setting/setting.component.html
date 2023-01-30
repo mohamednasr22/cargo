@@ -1,0 +1,84 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>edit</mat-icon> Edit Settings</span>
+  <div class="cs-right">
+  </div>
+</div>
+
+<form class="cs-box" [formGroup]="dataForm">
+  <div class="col">
+
+    <mat-card class="cs-card">
+      <mat-card-header>
+        <mat-card-title>General Settings</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div>
+          <div class="check_item">
+            <mat-form-field>
+              <mat-label>Owner Name</mat-label>
+              <input type="text" matInput formControlName="owner_name">
+            </mat-form-field>
+          </div>
+          <div class="check_item">
+            <mat-form-field>
+              <mat-label>Owner Email</mat-label>
+              <input type="text" matInput formControlName="owner_email">
+            </mat-form-field>
+          </div>
+          <div class="check_item">
+            <mat-form-field>
+              <mat-label>Pending Status</mat-label>
+              <mat-select formControlName="shipment_pending">
+                <mat-option *ngFor="let option of shipment_statuses" [value]="option.id">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="check_item">
+            <mat-form-field>
+              <mat-label>Default User Group</mat-label>
+              <mat-select formControlName="default_user_group">
+                <mat-option *ngFor="let option of user_groups" [value]="option.user_group_id">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="check_item">
+            <mat-form-field>
+              <mat-label>Shared Container</mat-label>
+              <mat-select formControlName="shared_container_id">
+                <mat-option *ngFor="let option of container_types" [value]="option.id">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="check_item">
+            <mat-form-field>
+              <mat-label>Eta Reminder(Days)</mat-label>
+              <input type="text" matInput formControlName="eta_reminder">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <div class="form-add">
+        <button mat-raised-button color="warn" disabled *ngIf="submitted">
+          <span >Wait</span>
+        </button>
+        <button mat-raised-button color="warn" (click)="submitForm()" [disabled]="!dataForm.valid" *ngIf="!submitted">
+          <span>Update</span>
+        </button>
+      </div>
+
+    </mat-card>
+
+
+
+
+  </div>
+
+</form>
+

@@ -1,0 +1,68 @@
+<div class="sk-template center" *ngIf="type == 'card'">
+    <span class="loader circle progress-dark"
+    aria-busy="true"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuetext="Loading..."
+    role="progressbar"
+    tabindex="0"></span>
+    <span class="loader progress-dark"
+    aria-busy="true"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuetext="Loading..."
+    role="progressbar"
+    tabindex="0"
+    *ngFor="let i of [1, 2, 3]"
+    ></span>
+</div>
+
+<div class="sk-template center" *ngIf="type == 'news'">
+    <span class="loader image progress-dark"
+    aria-busy="true"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuetext="Loading..."
+    role="progressbar"
+    tabindex="0"></span>
+    <span class="loader progress-dark"
+    aria-busy="true"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuetext="Loading..."
+    role="progressbar"
+    tabindex="0"
+    *ngFor="let i of [1, 2, 3]"
+    ></span>
+</div>
+
+<div class="sk-template" *ngIf="type == 'rows'">
+    <span class="loader row progress-dark"
+    aria-busy="true"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuetext="Loading..."
+    role="progressbar"
+    tabindex="0"
+    *ngFor="let i of [1, 2, 3,4,5]"
+    ></span>
+</div>
+
+<div class="sk-template" *ngIf="type == 'details'">
+    <span class="loader details progress-dark"
+    aria-busy="true"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuetext="Loading..."
+    role="progressbar"
+    tabindex="0"></span>
+    <span class="loader progress-dark"
+    aria-busy="true"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuetext="Loading..."
+    role="progressbar"
+    tabindex="0"
+    *ngFor="let i of [1, 2, 3,4,5,6,7,8,9,10]"
+    ></span>
+</div>

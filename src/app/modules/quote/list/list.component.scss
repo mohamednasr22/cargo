@@ -1,0 +1,42 @@
+
+@import "../../../../table.scss";
+
+mat-card{
+  display: flex;
+   flex-direction: column;
+}
+
+
+mat-grid-tile{
+  ::ng-deep{
+    .mat-figure{
+      align-items: start;
+    }
+  }
+
+}
+
+
+mat-form-field {
+  padding: 0px 0px 20px 0px;
+  margin-right: 20px;
+
+  ::ng-deep{
+    .mat-form-field-infix{
+      padding: 13px 0px;
+    }
+  }
+}
+
+
+
+.filter-btn {
+  display: inline-block;
+  width: 110px;
+}
+
+.filter-btn button {
+  width: 100%;
+}
+
+

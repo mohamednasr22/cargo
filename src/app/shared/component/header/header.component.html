@@ -1,0 +1,161 @@
+<ng-template #notificationItem let-items="items">
+  <ng-container *ngFor="let notif of items">
+    <button *ngIf="notif.type == 'shipment'" mat-menu-item [routerLink]="'/admin/shipments/info/' + notif.type_id">
+      <span>{{ notif.message }}</span>
+    </button>
+    <button *ngIf="notif.type == 'container'" mat-menu-item [routerLink]="'/admin/containers/info/' + notif.type_id">
+      <span>{{ notif.message }}</span>
+    </button>
+
+  </ng-container>
+  <ng-container *ngIf="items.length == 0">
+    <button mat-menu-item>There is no any notification.</button>
+  </ng-container>
+
+</ng-template>
+<div>
+  <button class="sidemenu_btn" mat-raised-button color="warn" (click)="toggleMenu()">Menu</button>
+  <div class="cs-header-menu" *ngIf="!opened">
+    <button mat-raised-button color="warn" [matMenuTriggerFor]="menu">Menu</button>
+    <mat-menu #menu="matMenu" class="topmn">
+      <a matRipple [routerLink]="'/admin/shipments/add'" routerLinkActive="active">
+        <mat-icon mat-list-icon>add</mat-icon>
+        Add Shipment
+      </a>
+      <a matRipple [routerLink]="'/admin/shipments/list'" routerLinkActive="active">
+        <mat-icon mat-list-icon>stars</mat-icon>
+        Shipments
+      </a>
+
+      <a matRipple [routerLink]="'/admin/containers/list'" routerLinkActive="active">
+        <mat-icon mat-list-icon>view_quilt</mat-icon>
+        Containers
+      </a>
+      <a matRipple [routerLink]="'/admin/containers/shared'" routerLinkActive="active" *ngIf="pms.container.view_shared_container">
+        <mat-icon mat-list-icon>view_quilt</mat-icon>
+        Shared Containers
+      </a>
+      <a matRipple [routerLink]="'/admin/accountings/list'" routerLinkActive="active" *ngIf="pms.accounting.view">
+        <mat-icon mat-list-icon>money</mat-icon>
+        Accounting
+      </a>
+      <a matRipple [routerLink]="'/admin/quote/list'" routerLinkActive="active" *ngIf="pms.quotes.view">
+        <mat-icon mat-list-icon>format_quote</mat-icon>
+        Quotes
+      </a>
+      <a matRipple [routerLink]="'/admin/localtransportantions'" routerLinkActive="active" *ngIf="pms.localtransportation.view">
+        <mat-icon mat-list-icon>local_shipping</mat-icon>
+        Local Transportations
+      </a>
+      <a matRipple [routerLink]="'/admin/address'" routerLinkActive="active">
+        <mat-icon mat-list-icon>toc</mat-icon>
+        Address Book
+      </a>
+    </mat-menu>
+  </div>
+  <!-- <ng-container *ngIf="showsearch">
+    <form class="shipment_search_form">
+      <mat-icon mat-list-icon>search</mat-icon>
+      <mat-form-field>
+        <mat-label>Track Shipment</mat-label>
+        <input type="text" matInput>
+      </mat-form-field>
+      <div class="tracking-btn">
+        <button mat-raised-button color="warn">Search</button>
+      </div>
+    </form>
+  </ng-container> -->
+  <div class="right_links">
+    <button mat-icon-button class="not_lnk" [matMenuTriggerFor]="notification" (click)="seenNotifications()">
+      <mat-icon [matBadge]="totalnotifications" matBadgeColor="warn">notifications</mat-icon>
+    </button>
+    <mat-menu #notification="matMenu">
+      <ng-container [ngTemplateOutlet]="notificationItem" [ngTemplateOutletContext]="{ items : notifications }">
+
+      </ng-container>
+
+
+    </mat-menu>
+
+    <button mat-icon-button (click)="refreshSettings()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="pms.general.settings">
+      <mat-icon>settings</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+
+      <button mat-menu-item [routerLink]="'/admin/shipmentstatuses'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Shipment Statuses</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/containerstatuses'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Container Statuses</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/containertypes'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Container Types</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/couriers'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Couriers</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/warehouses'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Warehouses</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/destinations'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Destinations</span>
+      </button>
+
+      <button mat-menu-item [routerLink]="'/admin/shippertypes'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Shipper Types</span>
+      </button>
+
+      <button mat-menu-item [routerLink]="'/admin/invoicetypes'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Invoice Types</span>
+      </button>
+
+      <button mat-menu-item [routerLink]="'/admin/invoicestatuses'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Invoice Statuses</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/configurations'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Configurations</span>
+      </button>
+    </mat-menu>
+
+
+
+    <button mat-icon-button [matMenuTriggerFor]="usermenu" aria-label="User Menu">
+      <mat-icon>person</mat-icon>
+    </button>
+    <mat-menu #usermenu="matMenu">
+      <button mat-menu-item [routerLink]="'/admin/users/list'" *ngIf="pms.general.users">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>Users</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/groups/list'" *ngIf="pms.general.users">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>User Roles</span>
+      </button>
+      <button mat-menu-item [routerLink]="'/admin/profile'">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+        <span>My Profile</span>
+      </button>
+      <button mat-menu-item (click)="loggout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+
+
+
+  </div>
+</div>

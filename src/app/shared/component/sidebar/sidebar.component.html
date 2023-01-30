@@ -1,0 +1,63 @@
+<div class="profile">
+  <img [src]="baseurl + 'assets/images/logo.jpeg'"/>
+  <i>
+
+    <img [src]="image"/>
+  </i>
+
+  <span>{{ username }}</span>
+</div>
+<mat-list>
+
+  <a mat-list-item matRipple [routerLink]="'/admin/shipments/add'">
+    <mat-icon mat-list-icon>add</mat-icon>
+    Add Shipment
+  </a>
+  <mat-divider></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/shipments/list'" routerLinkActive="active">
+    <mat-icon mat-list-icon>stars</mat-icon>
+    Shipments
+  </a>
+
+  <mat-divider></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/containers/list'" routerLinkActive="active">
+    <mat-icon mat-list-icon>view_quilt</mat-icon>
+    Containers
+  </a>
+  <mat-divider *ngIf="pms.container.view_shared_container"></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/containers/shared'" routerLinkActive="active" *ngIf="pms.container.view_shared_container">
+    <mat-icon mat-list-icon>view_quilt</mat-icon>
+    Shared Containers
+  </a>
+  <ng-container>
+    <mat-divider *ngIf="pms.accounting.view"></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/accountings/list'" routerLinkActive="active" *ngIf="pms.accounting.view">
+    <mat-icon mat-list-icon>money</mat-icon>
+    Accounting
+  </a>
+  </ng-container>
+  <mat-divider *ngIf="pms.quotes.view"></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/quote/list'" routerLinkActive="active" *ngIf="pms.quotes.view && pms.quotes.update">
+    <mat-icon mat-list-icon>format_quote</mat-icon>
+    Quotes
+  </a>
+  <a mat-list-item matRipple [routerLink]="'/admin/quote/view'" routerLinkActive="active" *ngIf="pms.quotes.view && !pms.quotes.update">
+    <mat-icon mat-list-icon>format_quote</mat-icon>
+    Quotes
+  </a>
+  <mat-divider *ngIf="pms.localtransportation.view"></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/localtransportantions'" routerLinkActive="active" *ngIf="pms.localtransportation.view">
+    <mat-icon mat-list-icon>local_shipping</mat-icon>
+    Local Transportations
+  </a>
+  <mat-divider></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/address'" routerLinkActive="active">
+    <mat-icon mat-list-icon>toc</mat-icon>
+    Address Book
+  </a>
+  <mat-divider></mat-divider>
+  <a mat-list-item matRipple [routerLink]="'/admin/signature'" routerLinkActive="active" *ngIf="signatures || pms.general.signatures">
+    <mat-icon mat-list-icon>edit</mat-icon>
+    Signatures
+  </a>
+</mat-list>

@@ -1,0 +1,90 @@
+mat-card{
+  ::ng-deep{
+    .mat-card-header-text {
+      margin: 0px;
+    }
+  }
+}
+mat-form-field {
+  width: 100%;
+
+  ::ng-deep{
+    .mat-form-field-infix {
+      padding: 10px 0px;
+    }
+  }
+}
+
+.long_lbl{
+  ::ng-deep{
+    .mat-form-field-infix{
+      padding: 15px 0px;
+    }
+  }
+
+}
+
+.form-add {
+  display: inline-block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.form-add button {
+  width: 100%;
+}
+
+.loader_spinner {
+  margin: 20px auto;
+}
+
+.signature {
+  margin-top: 20px;
+  display: inline-block;
+  width: 100%;
+}
+
+.submit_signature{
+  margin-top: 20px;
+}
+
+.shipper_list {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  li {
+    height: 54px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ececec;
+    background: #f9f9f9;
+    border-radius: 4px;
+    padding: 0px 14px;
+    >span{
+      display: inline-block;
+      margin-top: 17px;
+      font-weight: bold;
+    }
+    button {
+      float: right;
+      margin-top: 7px;
+    }
+  }
+}
+
+::ng-deep{
+  .mat-expansion-panel-header-title {
+    color: #198dca;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}
+
+@media screen and (max-width:900px){
+  .ct_holder {
+      overflow: auto;
+  }
+
+  .ct_holder .gtable th {
+      white-space: nowrap;
+  }
+}

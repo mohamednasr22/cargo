@@ -1,0 +1,40 @@
+<h2 mat-dialog-title class="pop_header"><mat-icon mat-list-icon>attach_file</mat-icon> Attached Files</h2>
+<div mat-dialog-content>
+  <div class="files_list">
+    <mat-progress-spinner
+        *ngIf="!loaded"
+        class="loader_spinner"
+        color="primary"
+        mode="indeterminate">
+    </mat-progress-spinner>
+
+    <div *ngFor="let file of dataFiles" class="item">
+      <span class="filename">{{ file.image_name}}</span><span>{{ file.date_added}}
+        <a [href]="file.codepath" target="_blank">
+          <mat-icon>cloud_download</mat-icon>
+        </a>
+        <a [href]="file.file" target="_blank">
+          <mat-icon>remove_red_eye</mat-icon>
+        </a>
+        <button mat-icon-button aria-label="delete" (click)="deleteFile(file.file_id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </span>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <ng-container *ngIf="ready">
+    <button mat-raised-button (click)="submitForm()" color="warn">Upload {{ filename }}</button>
+  </ng-container>
+  <ng-container *ngIf="!ready">
+    <label class="cs-dlnk2" mat-ripple for="inp_excel">
+      <mat-icon mat-list-icon>add</mat-icon>  Add New Attachment
+    </label>
+    <input type="file" style="display:none;" id="inp_excel" accept=".txt, .pdf,.doc,.docx,.zip" (change)="onFileChange($event)"/>
+
+  </ng-container>
+
+
+  <button mat-button (click)="onNoClick()">Close</button>
+</div>

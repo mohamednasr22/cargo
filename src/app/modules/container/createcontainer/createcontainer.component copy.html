@@ -1,0 +1,141 @@
+<div class="cs-page-header">
+  <span><mat-icon mat-list-icon>view_quilt</mat-icon> Create Container</span>
+  <div class="cs-right">
+  </div>
+</div>
+
+<form class="cs-box">
+  <div class="col col3-1">
+    <div>
+      <div class="col col2">
+        <div>
+          <mat-card class="cs-card">
+            <mat-card-header>
+              <mat-card-title>Container Information</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <mat-label>Container No</mat-label>
+                <input type="text" matInput>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Booking No</mat-label>
+                <input type="text" matInput>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Port Of Loading</mat-label>
+                <input type="text" matInput>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Port Of Landing</mat-label>
+                <input type="text" matInput>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Port Of Discharge</mat-label>
+                <input type="text" matInput>
+              </mat-form-field>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div>
+          <mat-card class="cs-card">
+            <mat-card-header>
+              <mat-card-title>Trip Information</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <mat-label>Origin</mat-label>
+                <mat-select>
+                  <mat-option value="0">Saudi Arabia</mat-option>
+                  <mat-option value="1">Egypt</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Destination</mat-label>
+                <mat-select>
+                  <mat-option value="0">Saudi Arabia</mat-option>
+                  <mat-option value="1">Egypt</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+              <mat-form-field>
+                <mat-label>Telephone</mat-label>
+                <input type="text" matInput>
+              </mat-form-field>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Time Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <input matInput [matDatepicker] = "pickpicker" placeholder = "Date">
+              <mat-datepicker-toggle matSuffix [for] = "pickpicker"></mat-datepicker-toggle>
+              <mat-datepicker #pickpicker></mat-datepicker>
+           </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Time</mat-label>
+              <input [ngxTimepicker]="picker" matInput>
+              <ngx-material-timepicker #picker></ngx-material-timepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput [matDatepicker] = "pickpicker2" placeholder = "Expected Date">
+              <mat-datepicker-toggle matSuffix [for] = "pickpicker2"></mat-datepicker-toggle>
+              <mat-datepicker #pickpicker2></mat-datepicker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Publish</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>Current City</mat-label>
+              <input type="text" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Status</mat-label>
+              <mat-select>
+                <mat-option value="0">Pending</mat-option>
+                <mat-option value="1">Cancelled</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Remarks</mat-label>
+              <textarea matInput></textarea>
+            </mat-form-field>
+
+          </mat-card-content>
+        </mat-card>
+        <div class="form-add">
+          <button mat-raised-button color="warn">Add Container</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</form>
+

@@ -1,0 +1,27 @@
+<!-- <div class="cs-container">
+  <div class="cs-sidebar">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="cs-content">
+    <app-header></app-header>
+    <div class="cs-route">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div> -->
+
+<mat-drawer-container class="example-container">
+  <mat-drawer #sidenav [mode]="mode" [opened]="menuOpen == 'yes'" disableClosed="true">
+    <app-sidebar></app-sidebar>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-header (menuStatus)="toggleMenu($event);" [opened]="menuOpen == 'yes'"></app-header>
+    <div class="cs-container">
+      <div class="open_close_sidebar" (click)="toggleExpandMenu();" [ngClass]="{'active' : !isopen}"><mat-icon>arrow_back_ios</mat-icon></div>
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+  </mat-drawer-content>
+</mat-drawer-container>
+

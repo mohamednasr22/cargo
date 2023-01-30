@@ -1,0 +1,248 @@
+<div class="cs-page-header">
+  <span *ngIf="!editMode"><mat-icon mat-list-icon>add</mat-icon> Create Container</span>
+  <span *ngIf="editMode"><mat-icon mat-list-icon>edit</mat-icon> Edit Container</span>
+
+
+  <div class="cs-right">
+    <a [routerLink]="'/admin/containers/list'" mat-flat-button>
+      <mat-icon mat-list-icon>keyboard_arrow_left</mat-icon>  Back
+    </a>
+
+  </div>
+</div>
+
+<form class="cs-box" [formGroup]="dataForm">
+  <div class="col col3-1">
+    <div>
+
+      <div class="col" formGroupName="container">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Container Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>Container No</mat-label>
+              <input type="text" matInput formControlName="container_no">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Booking No</mat-label>
+              <input type="text" matInput formControlName="booking_no">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Port Of Loading</mat-label>
+              <input type="text" matInput formControlName="port_of_loading">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Port Of Discharge</mat-label>
+              <input type="text" matInput formControlName="port_of_discharge">
+            </mat-form-field>
+
+            <mat-form-field>
+              <input matInput [matDatepickerFilter]="dateSailingFilter.bind(this)" [matDatepicker]="pickpicker" formControlName="sailing_date" placeholder="Sailing Date">
+              <mat-datepicker-toggle matSuffix [for] = "pickpicker"></mat-datepicker-toggle>
+              <mat-datepicker #pickpicker></mat-datepicker>
+           </mat-form-field>
+
+            <mat-form-field>
+              <input matInput [matDatepickerFilter]="dateEtaFilter.bind(this)" [matDatepicker]="pickpicker2" formControlName="eta" placeholder="ETA">
+              <mat-datepicker-toggle matSuffix [for] = "pickpicker2"></mat-datepicker-toggle>
+              <mat-datepicker #pickpicker2></mat-datepicker>
+            </mat-form-field>
+
+
+          <mat-form-field>
+            <mat-label>Courier</mat-label>
+            <mat-select formControlName="courier">
+              <mat-option *ngFor="let option of couriers" [value]="option.id">
+                {{option.name}}
+              </mat-option>
+            </mat-select>
+
+          </mat-form-field>
+
+
+
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+      <div class="col" *ngIf="containerHistory">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Container History</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <div class="ct_holder">
+                <table class="gtable">
+                  <thead>
+                    <th>Container Status</th>
+                    <th>Image</th>
+                    <th *ngIf="pms.show_user_column">Added By</th>
+                    <th>Note</th>
+                    <th>Added Date</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of containerHistory">
+                      <td>{{ item.name}}</td>
+                      <!-- <td>
+                        <button mat-button *ngIf="!item.file" disabled><mat-icon>image</mat-icon></button>
+                        <button mat-button (click)="openImage(item.file)" *ngIf="item.file"><mat-icon>image</mat-icon></button>
+                      </td> -->
+                      <td>
+                        <button mat-button *ngIf="!item.file" disabled><mat-icon>image</mat-icon></button>
+                        <button mat-button (click)="openGallery(item)" *ngIf="item.file"><mat-icon>image</mat-icon></button>
+                      </td>
+                      <td *ngIf="pms.show_user_column">{{ item.username}}</td>
+                      <td>{{ item.note}}</td>
+                      <td>{{ item.date_added}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div>
+      <div class="col">
+        <mat-card class="cs-card">
+          <mat-card-header>
+            <mat-card-title>Assign Shipment</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+
+
+            <mat-form-field formGroupName="other" class="hprint">
+              <mat-label>Search For Shipments</mat-label>
+              <ng-container>
+                <input type="text" matInput [matAutocomplete]="auto" formControlName="shipment_id">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayShipments" (optionSelected)="onShipmentSelectionChanged($event)">
+                  <mat-option *ngFor="let option of filteredShipments | async" [value]="option.shipment_id">
+                    {{option.shipment_id}}
+                  </mat-option>
+                </mat-autocomplete>
+              </ng-container>
+            </mat-form-field>
+            <mat-chip-list aria-label="Shipment list" formArrayName="shipments">
+              <mat-chip
+              *ngFor="let item of shipments_list;let i = index" [formGroupName]="i"
+              [selectable]="false"
+              [removable]="true"
+              (removed)="removeShipment(i)">
+              {{item}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-list>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col hprint">
+
+        <mat-card class="cs-card" formArrayName="history">
+          <mat-card-header>
+            <mat-card-title>Publish</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+
+            <mat-form-field>
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="container_status_id">
+                <mat-option *ngFor="let option of container_statuses" [value]="option.id">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+
+            </mat-form-field>
+
+
+            <mat-form-field>
+              <mat-label>Note</mat-label>
+              <textarea matInput formControlName="note"></textarea>
+            </mat-form-field>
+
+            <div class="fupload">
+              <label for="ifile">Attach Image</label>
+              <input type="file" id="ifile" multiple (change)="onFileChange($event)" accept=".png, .jpg, .jpeg">
+            </div>
+
+          </mat-card-content>
+        </mat-card>
+        <div class="form-add">
+          <mat-progress-spinner *ngIf="submitted"
+              class="loader_spinner"
+              color="primary"
+              mode="determinate"
+              [value]="this.percentCompleted">
+          </mat-progress-spinner>
+          <button mat-raised-button color="warn" (click)="submitForm()" [disabled]="!dataForm.valid" *ngIf="!submitted">
+            <span *ngIf="!editMode">Submit</span>
+            <span *ngIf="editMode">Update</span>
+          </button>
+        </div>
+
+        <mat-accordion *ngIf="containerId" class="signature">
+          <mat-expansion-panel (opened)="loadShippers()">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Signatures
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <!-- <mat-selection-list [formControl]="shippersList">
+                <mat-list-option *ngFor="let shipper of container_shippers" [value]="shipper" [disabled]="checkSentStatus(shipper.shipper_id)">
+                  {{shipper.name}} <ng-container *ngIf="checkSentStatus(shipper.shipper_id)">(Sent)</ng-container>
+                </mat-list-option>
+              </mat-selection-list>
+              <span *ngIf="sendingRequest">Sending...</span>
+
+
+
+              <button *ngIf="!sendingRequest" mat-raised-button class="submit_signature" color="warn" (click)="sendSignatureRequest()">
+                <span>Send Sign Request</span>
+              </button> -->
+
+              <ul class="shipper_list">
+                <li *ngFor="let shipper of container_shippers">
+                  <span>{{shipper.name}} - #{{shipper.shipment_id}}</span>
+                  <mat-progress-spinner *ngIf="shipper.submited"
+                    [diameter]="40">
+                </mat-progress-spinner>
+                  <ng-container *ngIf="!checkSentStatus(shipper)">
+                    <button mat-raised-button (click)="sendSignatureRequest(shipper)">
+                      <span>Send</span>
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf="checkSentStatus(shipper)">
+                    <button mat-raised-button disabled>
+                      <span>Sent</span>
+                    </button>
+                  </ng-container>
+
+                </li>
+              </ul>
+
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+      </div>
+
+    </div>
+  </div>
+
+</form>
+
+
+<ng-template #itemTemplate let-index="index" let-type="type" let-data="data" let-currIndex="currIndex">
+	<ng-container *ngIf="type === 'imageViewer' && index === currIndex">
+    <ngx-imageviewer [src]="data.src"></ngx-imageviewer>
+  </ng-container>
+</ng-template>
