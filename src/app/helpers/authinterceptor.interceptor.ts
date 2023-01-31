@@ -14,7 +14,6 @@ export class AuthinterceptorInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthenticationService) {}
 
   intercept(request:HttpRequest<any>, next: HttpHandler):Observable<any> {
-    debugger;
     const currentUser = this.authenticationService.currentUser;
     if (currentUser) {
         request = request.clone({

@@ -29,7 +29,12 @@ export class ShipperComponent implements OnInit {
   shipperId: number;
   editMode:boolean = false;
 
-  constructor(public dialogRef: MatDialogRef<ShipperComponent> , @Inject(MAT_DIALOG_DATA) public data: any ,private _snackBar: MatSnackBar,private fb:FormBuilder,private _manager:ManagerService , private shipperService:ShipperService) { }
+  constructor(public dialogRef: MatDialogRef<ShipperComponent> , 
+    @Inject(MAT_DIALOG_DATA) public data: any ,
+    private _snackBar: MatSnackBar,
+    private fb:FormBuilder,
+    private _manager:ManagerService , 
+    private shipperService:ShipperService) { }
   ngOnInit(): void {
 
     this.resetForm();

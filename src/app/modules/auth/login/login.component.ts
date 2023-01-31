@@ -83,9 +83,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(u,p){
-    debugger
-    alert(u)
-    alert(p)
+    
     this.authenticationService.login(u, p)
          .pipe(first())
         .subscribe( data => {

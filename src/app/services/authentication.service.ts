@@ -22,16 +22,12 @@ export class AuthenticationService {
 
   login(email: string, password: string) 
   {
-    alert('_user')
 
-    console.log("lo");
   
       return this.http.post(`${environment.apiUrl}/auth/login`, { email, password })
       
         .pipe(map((_user: any) => {
-          debugger;
            if (_user) {
-            alert('_user mmm')
 
             /* if (_user) {
               alert('_user ppp')

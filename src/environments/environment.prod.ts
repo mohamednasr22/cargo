@@ -6,7 +6,7 @@
 };
 */
 export const environment = {
-  production: false,
+  production: true,
   home : 'http://localhost:4200/',
   //https://dev.aswaqy.net/index.php/api
   apiUrl:'https://dev.aswaqy.net/index.php/api',
